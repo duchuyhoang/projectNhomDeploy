@@ -9,6 +9,14 @@ module.exports = {
         filename: "bundle.js",
         clean:true
     },
+    resolve:{
+        alias:{
+            '@Components':path.resolve(__dirname,"./src/components"),
+            '@Core':path.resolve(__dirname,"./src/core"),
+            "@Assets":path.resolve(__dirname,"./src/assets"),
+            "@Ultis":path.resolve(__dirname,"./src/utils"),
+        }
+    },
 
 devServer:{
     stats: "minimal",
