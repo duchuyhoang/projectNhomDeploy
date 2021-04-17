@@ -19,7 +19,9 @@ const styles=useStyles();
 return (
     <>
     <div className={styles.root}>We provide full service at every step</div>
-    <SVGIcon name="instagram" height={30} width={30} />
+    <SVGIcon name="pinterest" height={30} width={30} />
+    <SVGIcon name="google" height={30} width={30} />
+    <SVGIcon name="dribbble" height={30} width={30} />
     </>
 )
 

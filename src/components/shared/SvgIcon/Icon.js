@@ -17,6 +17,9 @@ import Calculator from "@Assets/svg/calculator.svg"
 import Facebook from "@Assets/svg/facebook.svg"
 import Twitter from "@Assets/svg/twitter.svg"
 import Instagram from "@Assets/svg/instagram.svg"
+import Google from "@Assets/svg/google.svg"
+import Dribbble from "@Assets/svg/dribbble.svg"
+import Pinterest from "@Assets/svg/pinterest.svg"
 
 
 const IconMap={
@@ -37,7 +40,10 @@ home:Home,
 calculator:Calculator,
 facebook:Facebook,
 twitter:Twitter,
-instagram:Instagram
+instagram:Instagram,
+pinterest: Pinterest,
+dribbble: Dribbble,
+google:Google
 }
 
 
