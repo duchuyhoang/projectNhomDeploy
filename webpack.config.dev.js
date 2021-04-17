@@ -51,7 +51,11 @@ devServer:{
                     loader: 'file-loader',
                 }
                 ,]
-            }
+            },
+            {
+                test: /\.svg$/,
+                use: ['@svgr/webpack'],
+              },
 
         ]
     },
