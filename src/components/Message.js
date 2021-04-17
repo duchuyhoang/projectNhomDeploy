@@ -6,7 +6,7 @@ export const Message=({message})=>{
 
 return (
     <>
-    <SVGIcon name="envelope" height={100} width={100}/>
+    <SVGIcon name="user" height={100} width={100}/>
     </>
 )
 
