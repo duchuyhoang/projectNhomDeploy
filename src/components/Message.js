@@ -1,9 +1,12 @@
-import React from "react";
+import React,{useState} from "react";
 import {SVGIcon} from "@Components/shared/SvgIcon/Icon";
 import { makeStyles } from '@material-ui/core/styles';
+import {CNSnackBar} from "./shared/CNSnackBar/CNSnackBar";
+import FixedContainer from "@Components/shared/Layout/FixedContainer"
+import {CNNotifications} from "@Components/shared/CNNotifications/CNNotifications";
+
 
 const useStyles=makeStyles(theme=>{
-    console.log(theme)
     return {
         root:(props)=>{
             return {
@@ -13,15 +16,37 @@ const useStyles=makeStyles(theme=>{
     }
 })
 
+
+
+
+
 export const Message=({message})=>{
 const styles=useStyles();
-
+const [isOpen,setIsOpen]=useState(true);
 return (
     <>
-    <div className={styles.root}>We provide full service at every step</div>
-    <SVGIcon name="pinterest" height={30} width={30} />
-    <SVGIcon name="google" height={30} width={30} />
-    <SVGIcon name="dribbble" height={30} width={30} />
+<FixedContainer config={{
+    alignItems:"center",
+    justifyContent:"center",
+}
+}>
+
+
+{/* Error display by this */}
+<CNNotifications>dadaadadadada</CNNotifications>
+
+
+</FixedContainer>
+    <CNSnackBar severity={"warning "} isErrorBoundaryAlert={true} isOpen={isOpen} onClose={()=>{
+        setIsOpen(false)
+    }}
+    handleClick={()=>{
+        setIsOpen(false)
+    }}>
+Hello world
+
+
+    </CNSnackBar>
     </>
 )
 
