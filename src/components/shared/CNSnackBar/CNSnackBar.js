@@ -29,7 +29,8 @@ const useSnackBarContentStyles = makeStyles({
 
 export const CNSnackBar = ({ severity = "error", isErrorBoundaryAlert = false, children, isOpen = false, onClose, handleClick, ...rest }) => {
     const snackBarContentStyles = useSnackBarContentStyles();
-    const snackBarStyles=useSnackBarStyles();
+    const snackBarStyles = useSnackBarStyles();
+    console.log(handleClick);
     const AlertComponent = () => {
 
         return (
@@ -40,17 +41,18 @@ export const CNSnackBar = ({ severity = "error", isErrorBoundaryAlert = false, c
         )
     }
 
-
-
     return (
         <>
-
             <Snackbar open={isOpen}
                 {...rest}
                 classes={snackBarStyles}
                 onClick={() => {
-                    if (isErrorBoundaryAlert)
+                   
+                    if (isErrorBoundaryAlert){
+                        console.log("halo");
                         handleClick()
+
+                    }
                 }
 
                 }
@@ -59,6 +61,14 @@ export const CNSnackBar = ({ severity = "error", isErrorBoundaryAlert = false, c
                     classes: snackBarContentStyles
                 }}
                 autoHideDuration={isErrorBoundaryAlert ? null : 3000}
+
+                ClickAwayListenerProps={{
+                    onClickAway:()=>{
+                        console.log("away");
+                    }
+                }
+                }
+
 
                 onClose={onClose}
 
