@@ -50,7 +50,7 @@ google:Google
 
 export const SVGIcon=({name,width=16,height=16,...rest})=>{
 const MatchIcon=IconMap[name]||null;
-
+console.log(MatchIcon);
 // return null
 
 return <MatchIcon  width={width} height={height} {...rest}  />

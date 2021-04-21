@@ -10,6 +10,7 @@ border-radius:10px;
 box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 padding:20px 10px;
 overflow:auto;
+position:relative;
 `
 
 export const CNNotifications=({children})=>{
