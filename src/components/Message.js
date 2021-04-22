@@ -17,24 +17,13 @@ const useStyles = makeStyles(theme => {
 })
 
 
-export const Message = ({ message }) => {
+ const Message = ({ message }) => {
     const styles = useStyles();
     const [isOpen, setIsOpen] = useState(true);
-    throw new Error("Looix")
+    
     return (
         <>
-            <FixedContainer config={{
-                alignItems: "center",
-                justifyContent: "center",
-            }
-            }>
-
-
-                {/* Error display by this */}
-                <CNNotifications>dadaadadadada</CNNotifications>
-
-
-            </FixedContainer>
+            {undefined.name}
             <CNSnackBar severity={"warning"} isErrorBoundaryAlert={true} isOpen={isOpen} onClose={() => {
                 setIsOpen(false)
             }}
@@ -49,3 +38,18 @@ export const Message = ({ message }) => {
     )
 
 }
+
+export default Message
+
+
+{/* <FixedContainer config={{
+                alignItems: "center",
+                justifyContent: "center",
+            }
+            }>
+
+
+                <CNNotifications>dadaadadadada</CNNotifications>
+
+
+            </FixedContainer> */}
