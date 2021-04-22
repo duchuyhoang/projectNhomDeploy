@@ -42,18 +42,24 @@ export class ErrorBoundary extends React.Component {
     render() {
         if (this.state.hasError) {
             return (
-                <FixedContainer config={{
+                <>
+                {!this.state.isOpen && <FixedContainer config={{
                     alignItems: "center",
                     justifyContent: "center",
                 }
                 }>
 
                     <CNNotifications>
-                        <SVGIcon name="close" width="30" height="30" className="closeIcon" />
+                        <SVGIcon name="close" width="20" height="20" className="closeIcon" onClick={this.handleOpen.bind(this)}/>
                         {this.state.errorDescribe}
                     </CNNotifications>
 
-                    <CNSnackBar severity={"error"} isErrorBoundaryAlert={true} isOpen={this.state.isOpen} onClose={this.handleClose.bind(this)}
+                    
+
+                </FixedContainer>}
+                
+
+                <CNSnackBar severity={"error"} isErrorBoundaryAlert={true} isOpen={this.state.isOpen} onClose={this.handleClose.bind(this)}
                         handleClick={
                             ()=>{
                                 console.log("aaaa");
@@ -62,10 +68,7 @@ export class ErrorBoundary extends React.Component {
                            }>
                         Error !!!
                      </CNSnackBar>
-
-                </FixedContainer>
-
-
+</>
             )
         }
 
