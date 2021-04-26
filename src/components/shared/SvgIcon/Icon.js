@@ -20,7 +20,9 @@ import Instagram from "@Assets/svg/instagram.svg"
 import Google from "@Assets/svg/google.svg"
 import Dribbble from "@Assets/svg/dribbble.svg"
 import Pinterest from "@Assets/svg/pinterest.svg"
-
+import ArrowDown from "@Assets/svg/arrowdown.svg";
+import ArrowUp from "@Assets/svg/arrowup.svg";
+import Tick from "@Assets/svg/tick.svg";
 
 const IconMap={
 logo:Logo,
@@ -43,15 +45,19 @@ twitter:Twitter,
 instagram:Instagram,
 pinterest: Pinterest,
 dribbble: Dribbble,
-google:Google
+google:Google,
+arrowDown:ArrowDown,
+arrowUp:ArrowUp,
+tick:Tick,
 }
 
 
 
 export const SVGIcon=({name,width=16,height=16,...rest})=>{
 const MatchIcon=IconMap[name]||null;
-console.log(MatchIcon);
 // return null
+
+if(MatchIcon===null) return null
 
 return <MatchIcon  width={width} height={height} {...rest}  />
 
