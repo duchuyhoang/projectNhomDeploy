@@ -3,17 +3,19 @@ import { SVGIcon } from "@Components/shared/SvgIcon/Icon";
 import { makeStyles } from '@material-ui/core/styles';
 import { CNSnackBar } from "./shared/CNSnackBar/CNSnackBar";
 import FixedContainer from "@Components/shared/Layout/FixedContainer"
-import { CNNotifications } from "@Components/shared/CNNotifications/CNNotifications";
+import {CNNotifications} from "@Components/shared/CNNotifications/CNNotifications";
+import {Loading} from "@Components/shared/CNLoading/CNLoading"
 
 
 const useStyles = makeStyles(theme => {
     return {
         root: (props) => {
             return {
-                ...theme.typography.header
+               ...theme.typography.header 
             }
         }
     }
+    console.log(theme);
 })
 
 
@@ -23,7 +25,7 @@ const useStyles = makeStyles(theme => {
     
     return (
         <>
-            {undefined.name}
+           <Loading></Loading>
             <CNSnackBar severity={"warning"} isErrorBoundaryAlert={true} isOpen={isOpen} onClose={() => {
                 setIsOpen(false)
             }}
@@ -40,16 +42,3 @@ const useStyles = makeStyles(theme => {
 }
 
 export default Message
-
-
-{/* <FixedContainer config={{
-                alignItems: "center",
-                justifyContent: "center",
-            }
-            }>
-
-
-                <CNNotifications>dadaadadadada</CNNotifications>
-
-
-            </FixedContainer> */}
