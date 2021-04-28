@@ -8,7 +8,6 @@
     display: flex;
     flex-wrap: wrap;
     animation: rotate 3s linear infinite;  
-    
 }
 .loading-screen {
     display: flex;
@@ -34,15 +33,8 @@
     height: 32px;
     background-color: red;
     margin: 4px;
-    animation: scale 1.5s linear infinite;
 }
 
-
-@keyframes scale{
-    50%{
-        transform: scale(1.2);
-    }
-}
 
 .loading span:nth-child(1){
     border-radius: 50% 50% 0 50%;

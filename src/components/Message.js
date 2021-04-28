@@ -3,35 +3,46 @@ import { SVGIcon } from "@Components/shared/SvgIcon/Icon";
 import { makeStyles } from '@material-ui/core/styles';
 import { CNSnackBar } from "./shared/CNSnackBar/CNSnackBar";
 import FixedContainer from "@Components/shared/Layout/FixedContainer"
-import { CNNotifications } from "@Components/shared/CNNotifications/CNNotifications";
-import { CNSelect } from "@Components/shared/CNSelect/CNSelect";
-import {CNSlider} from "@Components/shared/CNSlider/CNSlider"
-const useStyles = makeStyles(theme => {
+import { CNButton } from "@Components/shared/CNButton/CNButton"
+
+
+const useStyles = makeStyles(theme => { 
     return {
-        root: (props) => {
-            return {
-               ...theme.typography.header 
-            }
-        }
+        btnStyle: {
+            display: "flex",
+            justifyContent:"center",
+            right:"0",
+            top:"0",
+            bottom:"0",
+            left:"0",
+            position: "fixed", 
+            alignItems: "center",
+            flexDirection:"column",
     }
-    console.log(theme);
+    }      
 })
 
 
  const Message = ({ message }) => {
-    const styles = useStyles();
-   const [selectValue,setSelecteValue]=useState(null);
-   const [value, setValue] = React.useState([0, 37]);
-   const handleChange = (event, newValue) => {
-    setValue(newValue);
-    console.log(newValue)
-  };
+    const classes = useStyles();
+    const [isOpen, setIsOpen] = useState(true);
+    const [selectValue,setSelecteValue]=useState(null);
 
-
+    const handleChange = e => {
+      if(e===null)
+        setSelecteValue(null)
+      else
+      setSelecteValue(e?.value)
+      }
+      
 
     return (
         <>
-            <CNSlider value = {value} handleChange={handleChange}/>
+            
+            <div className={classes.btnStyle}>
+                <CNButton type="secondary" startIcon={<SVGIcon name="plus" width="12px" height="12px" />}></CNButton>
+                <CNButton type="main"></CNButton>
+            </div>
 
         </>
     )

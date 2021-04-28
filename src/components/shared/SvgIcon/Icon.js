@@ -23,6 +23,7 @@ import Pinterest from "@Assets/svg/pinterest.svg"
 import ArrowDown from "@Assets/svg/arrowdown.svg";
 import ArrowUp from "@Assets/svg/arrowup.svg";
 import Tick from "@Assets/svg/tick.svg";
+import Plus from "@Assets/svg/Plus.svg"
 
 const IconMap={
 logo:Logo,
@@ -49,6 +50,7 @@ google:Google,
 arrowDown:ArrowDown,
 arrowUp:ArrowUp,
 tick:Tick,
+plus:Plus,
 }
 
 
