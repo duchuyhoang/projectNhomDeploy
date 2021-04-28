@@ -5,6 +5,7 @@ import { CNSnackBar } from "./shared/CNSnackBar/CNSnackBar";
 import FixedContainer from "@Components/shared/Layout/FixedContainer"
 import { CNNotifications } from "@Components/shared/CNNotifications/CNNotifications";
 import { CNSelect } from "@Components/shared/CNSelect/CNSelect";
+import {CNSlider} from "@Components/shared/CNSlider/CNSlider"
 const useStyles = makeStyles(theme => {
     return {
         root: (props) => {
@@ -19,32 +20,18 @@ const useStyles = makeStyles(theme => {
 
  const Message = ({ message }) => {
     const styles = useStyles();
-    const [isOpen, setIsOpen] = useState(true);
    const [selectValue,setSelecteValue]=useState(null);
+   const [value, setValue] = React.useState([0, 37]);
+   const handleChange = (event, newValue) => {
+    setValue(newValue);
+    console.log(newValue)
+  };
 
-    const handleChange = e => {
-      if(e===null)
-        setSelecteValue(null)
-      else
-      setSelecteValue(e?.value)
-      }
 
 
     return (
         <>
-            <div style={{ display: "flex", flexWrap: "wrap" }}>
-                <CNSelect options={
-                    [
-                        { value: 'chocolate', label: 'Chocolate' },
-                        { value: 'strawberry', label: 'Strawberry' },
-                        { value: 'vanilla', label: 'Vanilla' }
-                    ]
-                    } 
-                onChange={handleChange}
-                placeholder={"Select..."}
-                />
-                {selectValue===null ? "Chưa chọn" : selectValue}
-            </div>
+            <CNSlider value = {value} handleChange={handleChange}/>
 
         </>
     )
