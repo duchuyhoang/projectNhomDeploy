@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
-import { SVGIcon } from "@Components/shared/SvgIcon/Icon";
+
 import '../CNTextField/CNTextField.css'
 const useTextFiledContentStyles = makeStyles((theme) => ({
 
@@ -42,7 +42,7 @@ export const CNTextField = ({type, inputChange,...rest }) => {
                     'aria-label': 'Description',
                 }}
                 {...rest}
-              endAdornment={(<SVGIcon className="InputIcon" name="search" width="30" height="30"/>)}
+             
             
             />
         </>
