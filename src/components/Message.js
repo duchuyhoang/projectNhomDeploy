@@ -1,21 +1,20 @@
 import React, { useState } from "react";
-import { SVGIcon } from "@Components/shared/SvgIcon/Icon";
 import { makeStyles } from '@material-ui/core/styles';
-import { CNSnackBar } from "./shared/CNSnackBar/CNSnackBar";
-import FixedContainer from "@Components/shared/Layout/FixedContainer"
-import { CNNotifications } from "@Components/shared/CNNotifications/CNNotifications";
-import { CNSelect } from "@Components/shared/CNSelect/CNSelect";
-import { CNCard } from "@Components/shared/CNCard/CNCard";
+import { CNAvatar } from "@Components/shared/CNAvatar/CNAvatar";
 
 
 const useStyles = makeStyles(theme => {
     return {
-        root: (props) => {
-            return {
-                ...theme.typography.header
-            }
+        style: {
+            display:"flex",
+            top:"0",
+            left:"0",
+            right:"0",
+            bottom:"0",
+            alignItems:"center",
+            justifyContent:"center",
+            position:"fixed"
         }
-    }
     }      
 })
 
@@ -35,31 +34,9 @@ const Message = ({ message }) => {
 
     return (
         <>
-            <div style={{ height: "200px", width: "300px" }}>
-
-
-                <CNCard headerComponent={<img src="https://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-1.jpg" width="100%" maxHeight="400" />}
-                    bodyComponent={
-                        <>
-                            <p>
-                                Lizard
-          </p>
-                            <p>
-                                Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                                across all continents except Antarctica
-          </p>
-                        </>
-                    }
-
-                    footerComponent={<div style={{ display: "flex", justifyContent: "center" }}>
-                        <button>Hello</button>
-                        <button>Hello11111</button>
-
-                    </div>}
-
-
-                />
-
+            <div className={styles.style}>
+            <CNAvatar type='small' src="https://scontent.fhan2-3.fna.fbcdn.net/v/t31.18172-8/27788301_747405972119527_849243654152381069_o.jpg?_nc_cat=107&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=Y70lW6lJjnUAX-HXg8x&_nc_ht=scontent.fhan2-3.fna&oh=e61467209325108f35652c15f83ba177&oe=60AF6AD1"></CNAvatar>
+            <CNAvatar type='large' src="https://scontent.fhan2-3.fna.fbcdn.net/v/t31.18172-8/27788301_747405972119527_849243654152381069_o.jpg?_nc_cat=107&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=Y70lW6lJjnUAX-HXg8x&_nc_ht=scontent.fhan2-3.fna&oh=e61467209325108f35652c15f83ba177&oe=60AF6AD1"></CNAvatar>
             </div>
         </>
     )
