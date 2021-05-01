@@ -1,21 +1,29 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
-
+import { SVGIcon } from "@Components/shared/SvgIcon/Icon";
+import '../CNTextField/CNTextField.css'
 const useTextFiledContentStyles = makeStyles((theme) => ({
 
     root: (props) => ({
         border: `2px solid #d8d8d8`,
         width: 300,
-        borderRadius: props.type === "largeBorderRadius" ? 20 : 5
+        borderRadius: props.type === "largeBorderRadius" ? 50 : 5,
+        padding: "6px 20px 6px 0"
+        
     }),
     input: (props) => ({
         color: theme.palette.text.primary,
-        paddingLeft: 10,
-        paddingTop: 10,
-        paddingBottom: 10,
+        padding:"6px 20px",
         fontSize: 18,
-        fontWeight: "bold"
+        fontWeight: 500,
+        '&::placeholder':{
+            color: "black",
+            fontWeight: 500
+        }
+    }),
+    fullWidth: (props) => ({
+        width: "100%"
     })
 
 }))
@@ -34,6 +42,8 @@ export const CNTextField = ({type, inputChange,...rest }) => {
                     'aria-label': 'Description',
                 }}
                 {...rest}
+              endAdornment={(<SVGIcon className="InputIcon" name="search" width="30" height="30"/>)}
+            
             />
         </>
     )

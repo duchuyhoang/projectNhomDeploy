@@ -40,8 +40,19 @@ const Message = ({ message }) => {
 
             <CNTextField
                 inputChange={inputChange}
-                type="largeBorderRadius"
-                placeholder="ABC"
+                type="largeBorderRadius"p
+                placeholder="ABCn"
+            />
+               <CNTextField
+                inputChange={inputChange}
+            
+                placeholder="ABCn"
+            />
+            <br></br>
+               <CNTextField
+                fullWidth={true}
+                inputChange={inputChange}
+                placeholder="ABCn"
             />
 
 
