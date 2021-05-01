@@ -1,0 +1,7 @@
+.InputIcon{
+    fill: #484848;
+    cursor: pointer;
+}
+.InputIcon:hover{
+    fill: #ff5a5f;
+}

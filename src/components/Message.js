@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import { CNAvatar } from "@Components/shared/CNAvatar/CNAvatar";
+import { CNSnackBar } from "./shared/CNSnackBar/CNSnackBar";
+import FixedContainer from "@Components/shared/Layout/FixedContainer"
+import { CNNotifications } from "@Components/shared/CNNotifications/CNNotifications";
+import { CNSelect } from "@Components/shared/CNSelect/CNSelect";
+import { CNTextField } from "@Components/shared/CNTextField/CNTextField";
 
 
-const useStyles = makeStyles(theme => {
+const useStyles = makeStyles((theme) => {
     return {
         style: {
             display:"flex",
@@ -15,29 +19,49 @@ const useStyles = makeStyles(theme => {
             justifyContent:"center",
             position:"fixed"
         }
-    }      
-})
+    }
+}
+)
 
 
 const Message = ({ message }) => {
     const styles = useStyles();
-    const [isOpen, setIsOpen] = useState(true);
-    const [selectValue, setSelecteValue] = useState(null);
+    //const [selectValue,setSelecteValue]=useState(null);
+    const [inputValue, setInputValue] = useState(null);
+    console.log(inputValue);
+    const inputChange = (e) => {
+        setInputValue(e.target.value)
 
-    const handleChange = e => {
-        if (e === null)
-            setSelecteValue(null)
-        else
-            setSelecteValue(e?.value)
-    }
+    };
 
 
     return (
         <>
-            <div className={styles.style}>
-            <CNAvatar type='small' src="https://scontent.fhan2-3.fna.fbcdn.net/v/t31.18172-8/27788301_747405972119527_849243654152381069_o.jpg?_nc_cat=107&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=Y70lW6lJjnUAX-HXg8x&_nc_ht=scontent.fhan2-3.fna&oh=e61467209325108f35652c15f83ba177&oe=60AF6AD1"></CNAvatar>
-            <CNAvatar type='large' src="https://scontent.fhan2-3.fna.fbcdn.net/v/t31.18172-8/27788301_747405972119527_849243654152381069_o.jpg?_nc_cat=107&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=Y70lW6lJjnUAX-HXg8x&_nc_ht=scontent.fhan2-3.fna&oh=e61467209325108f35652c15f83ba177&oe=60AF6AD1"></CNAvatar>
-            </div>
+
+            <CNTextField
+                inputChange={inputChange}
+                type="largeBorderRadius"
+                placeholder="ABCn"
+            />
+               <CNTextField
+                inputChange={inputChange}
+            
+                placeholder="ABCn"
+            />
+            <br></br>
+               <CNTextField
+                fullWidth={true}
+                inputChange={inputChange}
+                placeholder="ABCn"
+            />
+               <CNTextField
+                fullWidth={true}
+                inputChange={inputChange}
+                placeholder="ABCn"
+                type="largeBorderRadius"
+            />
+
+
         </>
     )
 
