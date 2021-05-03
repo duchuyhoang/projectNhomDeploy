@@ -27,7 +27,7 @@ const useButtonStyles = makeStyles((theme) => ({
 
 )
 
-export const CNButton = ({ type, ...rest }) => {
+export const CNButton = ({ type,children ,...rest }) => {
   const buttonStyle = useButtonStyles({ type })
   const [variant, setVariant] = useState("contained")
   function setHoverIn() {
@@ -45,7 +45,7 @@ export const CNButton = ({ type, ...rest }) => {
       {...rest}
 
     >
-      Search
+      {children}
     </Button>
   );
 }
