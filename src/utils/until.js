@@ -2,7 +2,6 @@ export const parentUntil = (element, tagName, step = 1) => {
     let currentStep = step;
     let currentElement = element; 
     while (currentElement.parentNode !== null) {
-        // console.log(currentElement.parentNode);
         if (currentElement.parentNode.tagName.toLowerCase() === tagName.toLowerCase()) {
            currentStep--;
         }

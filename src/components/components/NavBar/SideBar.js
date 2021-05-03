@@ -249,7 +249,7 @@ const RecursiveSideBar = ({ data, currentLayer, title, id }) => {
                                 {item.type === "parent" ? <Item
                                     key={item.title + index}
                                     onClick={(e) => {
-                                        console.log(e.target);
+                                    
                                         const currentElement = e.target;
                                         const nextSibling = siblingUntil(currentElement.parentNode.parentNode, "ul", index + 1);
                                         currentElement.parentNode.parentNode.classList.toggle("containerClose");
@@ -319,7 +319,6 @@ export const SideBar = ({ isOpen, setIsOpen }) => {
                 disableReactTree={true}
                 touchEvent={false}
                 onClickAway={(e) => {
-                    console.log("halo");
                     if (listenAwayState) {
                         setIsOpen(false);
                         setListenAwayState(false)

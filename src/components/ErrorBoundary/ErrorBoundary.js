@@ -24,8 +24,6 @@ export class ErrorBoundary extends React.Component {
     }
 
     handleClose() {
-        console.log("close");
-        // e.stopPropagation();
         this.setState({
             ...this.state,
             isOpen: false
@@ -62,7 +60,7 @@ export class ErrorBoundary extends React.Component {
                 <CNSnackBar severity={"error"} isErrorBoundaryAlert={true} isOpen={this.state.isOpen} onClose={this.handleClose.bind(this)}
                         handleClick={
                             ()=>{
-                                console.log("aaaa");
+                               
                                 this.handleClose()
                             }
                            }>

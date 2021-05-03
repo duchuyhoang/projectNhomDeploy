@@ -59,9 +59,6 @@ export const SmallScreenNavBar = ({ data }) => {
     const [isOpen, setIsOpen] = useState(false);
 
 
-
-
-
     return (
         <>
             <NavBarContainer>
