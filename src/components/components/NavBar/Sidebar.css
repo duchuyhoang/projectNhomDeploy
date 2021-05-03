@@ -1,0 +1,17 @@
+.open{
+    transform:translate3d(0,0,0)!important;
+    /* visibility:visible!important; */
+}
+
+.containerClose{
+    /* width:0px!important; */
+    transform:translate3d(-15%,0,0)!important;
+    
+    /* visibility:hidden; */
+}
+
+.containerOpen{
+    transform:translate3d(0,0,0)!important;
+    /* transform:translateX(-15px)!important; */
+
+}

@@ -25,7 +25,8 @@ import ArrowUp from "@Assets/svg/arrowup.svg";
 import Tick from "@Assets/svg/tick.svg";
 import Plus from "@Assets/svg/Plus.svg"
 import Search from "@Assets/svg/search.svg"
-
+import ArrowRight from "@Assets/svg/arrowright.svg"
+import ArrowLeft from "@Assets/svg/arrowleft.svg"
 
 const IconMap={
 logo:Logo,
@@ -53,7 +54,9 @@ arrowDown:ArrowDown,
 arrowUp:ArrowUp,
 tick:Tick,
 plus:Plus,
-search:Search
+search:Search,
+arrowright:ArrowRight,
+arrowleft:ArrowLeft,
 }
 
 

@@ -1,0 +1,23 @@
+
+.popover_class{
+    margin-top: 10px;
+    border: 1px solid black;
+  }
+  .popover_class::before{
+    content: '';
+    position: absolute;
+    top: -10px;
+    left:40px;
+    width: 0;
+    max-height: 0;
+    border-left: 13px solid transparent;
+    border-right: 13px solid transparent;
+    border-bottom: 15px solid #fff;
+    z-index: 10;
+  }
+
+
+.active{
+  max-height:300px!important;
+display:block;
+}

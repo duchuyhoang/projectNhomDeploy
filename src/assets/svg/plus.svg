@@ -1,10 +1,1 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="body_1" width="15" height="11">
-
-<g transform="matrix(0.01464844 0 0 0.01432292 0 0)">
-	<g transform="matrix(1.5 0 0 1.5 128 0)">
-	</g>
-    <path transform="matrix(1.5 0 0 1.5 128 0)"  d="M492 236L276 236L276 20C 276 8.954 267.046 0 256 0C 244.954 0 236 8.954 236 20L236 20L236 236L20 236C 8.954 236 0 244.954 0 256C 0 267.046 8.954 276 20 276L20 276L236 276L236 492C 236 503.046 244.954 512 256 512C 267.046 512 276 503.046 276 492L276 492L276 276L492 276C 503.046 276 512 267.046 512 256C 512 244.954 503.046 236 492 236z" stroke="none" fill="#000000" fill-rule="nonzero" />
-</g>
-</svg>
+<svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true" width="30" height="30"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg>

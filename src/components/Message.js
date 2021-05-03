@@ -19,8 +19,7 @@ const useStyles = makeStyles((theme) => {
             justifyContent:"center",
             position:"fixed"
         }
-    }
-}
+    }}      
 )
 
 
