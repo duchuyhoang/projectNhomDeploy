@@ -20,7 +20,7 @@ export const App = ({ title }) => {
             
             
                 <Router>
-                <NavBar currentTab={"properties"}></NavBar>
+                {/* <NavBar currentTab={"properties"}></NavBar> */}
                 <Content>
                     <Suspense fallback={<div>Loading...</div>}>
                         <Switch>
