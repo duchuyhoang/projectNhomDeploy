@@ -88,8 +88,6 @@ const CustomOption = (props) => {
 }
 
 
-
-
 export const CNSelect = ({options,...rest}) => {
     const [selectWidth, setSelectWidth] = useState("20%");
 
