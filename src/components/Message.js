@@ -1,13 +1,9 @@
 import React, { useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import { CNSnackBar } from "./shared/CNSnackBar/CNSnackBar";
-import FixedContainer from "@Components/shared/Layout/FixedContainer"
-import { CNNotifications } from "@Components/shared/CNNotifications/CNNotifications";
-import { CNSelect } from "@Components/shared/CNSelect/CNSelect";
-import {CNCheckBox} from '@Components/shared/CNCheckBox/CNCheckBox';
-import { Checkbox } from "@material-ui/core";
-import {uuid} from '../utils/uuid'
-const useStyles = makeStyles(theme => {
+import { Stretcher } from "@Components/components/Stretcher/Stretcher";
+
+
+const useStyles = makeStyles((theme) => {
     return {
         style: {
             display:"flex",
@@ -51,29 +47,9 @@ const [checkBoxState,setCheckBoxState] = React.useState([
 
     return (
         <>
+            <Stretcher>
 
-            <div className="checkBox-list">
-            {checkBoxState.map((checkBox) => {
-                
-                    return (
-                        <CNCheckBox
-                        label={checkBox.label}
-                        data={checkBox}
-                        checkBoxState={checkBoxState}
-                        setCheckBoxState={setCheckBoxState}
-                        key = {checkBox.id}
-                      
-                    />
-                    ) 
-        
-              
-                    
-                  
-                })}
-            </div>
-           
-
-        
+            </Stretcher>
         </>
     )
 
