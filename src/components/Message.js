@@ -5,7 +5,8 @@ import FixedContainer from "@Components/shared/Layout/FixedContainer"
 import { CNNotifications } from "@Components/shared/CNNotifications/CNNotifications";
 import { CNSelect } from "@Components/shared/CNSelect/CNSelect";
 import {CNCheckBox} from '@Components/shared/CNCheckBox/CNCheckBox';
-import { Checkbox } from "@material-ui/core";
+
+import {CNPagination} from '@Components/shared/CNPagination/CNPagination'
 import {uuid} from '../utils/uuid'
 const useStyles = makeStyles(theme => {
     return {
@@ -25,52 +26,23 @@ const useStyles = makeStyles(theme => {
 
 const Message = ({ message }) => {
     const styles = useStyles();
-   //const [selectValue,setSelecteValue]=useState(null);
-const [checkBoxState,setCheckBoxState] = React.useState([
-    {
-        label: "all", value: "all", id: uuid(),isChecked:false
-    },
-    {
-        label: "CheckBox1",value: "Huy", id: uuid(),
-        isChecked:false
-    },
-    {
-        label: "CheckBox2",value: "Pho", id: uuid(),
-        isChecked:false
-    },
-    {
-        label:"CheckBox3",value: "Dep trai", id: uuid(),
-        isChecked:false
-    },
-    {
-        label: "CheckBox4",value: "hihi", id: uuid(),
-        isChecked:false
-    },
-
-]) 
-
+    const [paginationState,setPaginationState]=useState({
+        
+        total: 20,
+        currentValue: 5
+        
+    })
+    console.log(paginationState)
     return (
         <>
 
-            <div className="checkBox-list">
-            {checkBoxState.map((checkBox) => {
-                
-                    return (
-                        <CNCheckBox
-                        label={checkBox.label}
-                        data={checkBox}
-                        checkBoxState={checkBoxState}
-                        setCheckBoxState={setCheckBoxState}
-                        key = {checkBox.id}
-                      
-                    />
-                    ) 
-        
-              
-                    
-                  
-                })}
-            </div>
+            <CNPagination
+                count = {paginationState.total}
+                page = {paginationState.currentValue}
+                siblingCount={paginationState.total/12}
+                paginationState={paginationState}
+                setPaginationState={setPaginationState}
+            />
            
 
         
