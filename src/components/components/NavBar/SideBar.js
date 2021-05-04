@@ -317,7 +317,7 @@ export const SideBar = ({ isOpen, setIsOpen }) => {
         <>
             <ClickAwayListener
                 disableReactTree={true}
-                // touchEvent={false}
+                touchEvent={false}
                 onClickAway={(e) => {
                     console.log("halo");
                     if (listenAwayState) {
