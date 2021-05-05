@@ -22,28 +22,6 @@ const useStyles = makeStyles((theme) => {
 const Message = ({ message }) => {
     const styles = useStyles();
    //const [selectValue,setSelecteValue]=useState(null);
-const [checkBoxState,setCheckBoxState] = React.useState([
-    {
-        label: "all", value: "all", id: uuid(),isChecked:false
-    },
-    {
-        label: "CheckBox1",value: "Huy", id: uuid(),
-        isChecked:false
-    },
-    {
-        label: "CheckBox2",value: "Pho", id: uuid(),
-        isChecked:false
-    },
-    {
-        label:"CheckBox3",value: "Dep trai", id: uuid(),
-        isChecked:false
-    },
-    {
-        label: "CheckBox4",value: "hihi", id: uuid(),
-        isChecked:false
-    },
-
-]) 
 
     return (
         <>
