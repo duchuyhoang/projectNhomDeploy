@@ -21,10 +21,7 @@ const useStyles = makeStyles((theme) => {
 
 const Message = ({ message }) => {
     const styles = useStyles();
-<<<<<<< HEAD
    //const [selectValue,setSelecteValue]=useState(null);
-=======
->>>>>>> b8acfd27288a4498002622f407747ae2d3d07343
 
     return (
         <>
