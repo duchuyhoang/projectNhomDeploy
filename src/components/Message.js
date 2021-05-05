@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { Stretcher } from "@Components/components/Stretcher/Stretcher";
-
+import { Footer }from "@Components/components/Footer/Footer";
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -21,13 +21,19 @@ const useStyles = makeStyles((theme) => {
 
 const Message = ({ message }) => {
     const styles = useStyles();
+<<<<<<< HEAD
    //const [selectValue,setSelecteValue]=useState(null);
+=======
+>>>>>>> b8acfd27288a4498002622f407747ae2d3d07343
 
     return (
         <>
             <Stretcher>
 
             </Stretcher>
+            <Footer>
+
+            </Footer>
         </>
     )
 
