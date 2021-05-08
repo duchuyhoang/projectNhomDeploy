@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { Stretcher } from "@Components/components/Stretcher/Stretcher";
 import { Footer }from "@Components/components/Footer/Footer";
+import { LogInModal }from "@Components/components/LogInModal/LogInModal";
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -21,18 +22,24 @@ const useStyles = makeStyles((theme) => {
 
 const Message = ({ message }) => {
     const styles = useStyles();
+   //const [selectValue,setSelecteValue]=useState(null);
 
     return (
-        <>
+        <>           
+            
             <Stretcher>
 
             </Stretcher>
             <Footer>
 
             </Footer>
+            <LogInModal>
+                Login
+            </LogInModal>
         </>
     )
 
 }
 
 export default Message
+
