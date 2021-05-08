@@ -1,14 +1,9 @@
 import React, { useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import { CNSnackBar } from "./shared/CNSnackBar/CNSnackBar";
-import FixedContainer from "@Components/shared/Layout/FixedContainer"
-import { CNNotifications } from "@Components/shared/CNNotifications/CNNotifications";
-import { CNSelect } from "@Components/shared/CNSelect/CNSelect";
-import { CNCheckBox } from '@Components/shared/CNCheckBox/CNCheckBox';
+import { Stretcher } from "@Components/components/Stretcher/Stretcher";
+import { Footer }from "@Components/components/Footer/Footer";
 
-import { CNPagination } from '@Components/shared/CNPagination/CNPagination'
-import { uuid } from '../utils/uuid'
-const useStyles = makeStyles(theme => {
+const useStyles = makeStyles((theme) => {
     return {
         style: {
             display: "flex",
@@ -27,10 +22,6 @@ const useStyles = makeStyles(theme => {
 
 const Message = ({ message }) => {
     const styles = useStyles();
-    const [paginationState, setPaginationState] = useState({
-
-        total: 20,
-        currentValue: 5
 
     })
     return (
@@ -48,6 +39,10 @@ const Message = ({ message }) => {
 
 
 
+            </Stretcher>
+            <Footer>
+
+            </Footer>
         </>
     )
 
