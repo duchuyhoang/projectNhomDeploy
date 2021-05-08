@@ -11,7 +11,7 @@ import { NavBar } from "@Components/components/NavBar/NavBar";
 import styled from 'styled-components'
 
 const Content = styled.section`
-padding-top:80px;
+padding-top:150px;
 `
 
 export const App = ({ title }) => {
@@ -20,7 +20,7 @@ export const App = ({ title }) => {
             
             
                 <Router>
-                {/* <NavBar currentTab={"properties"}></NavBar> */}
+                <NavBar currentTab={"properties"}></NavBar>
                 <Content>
                     <Suspense fallback={<div>Loading...</div>}>
                         <Switch>

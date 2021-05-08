@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 import styled, { css } from 'styled-components'
 import { SVGIcon } from "@Components/shared/SvgIcon/Icon";
 import useMediaQuery from "@Core/hooks/useMediaQuery";
-import { makeStyles } from '@material-ui/core/styles';
-import Popover from '@material-ui/core/Popover';
 import { SmallScreenNavBar } from "./SmallScreenNavBar";
 import {CNButton} from "@Components/shared/CNButton/CNButton";
-
+import { HomeModal } from "@Components/components/Modals/HomeModal";
 import "./NavBar.css"
 
 
@@ -179,6 +177,8 @@ color:${props=>props.theme.palette.primary.main}!important;
 border-radius: 50px 50px 50px 50px!important;
     padding: 11px 30px 11px 30px!important;
     height:65px!important;
+    width:270px!important;
+    box-sizing:border-box;
 border:none;
 font-size:19px!important;
 &:hover{
@@ -265,6 +265,8 @@ export const NavBar = (props) => {
     const { mediaScreenTrue } = useMediaQuery("(min-width:1400px)");
     const { currentTab } = props
     const [selectedTab, setSelectedTab] = useState(currentTab)
+const [homeModalOpen,setHomeModalOpen]=useState(false);
+const [selectedHomeModal,setSelectedHomeModal]=useState("login");
 
     const handleOver = selectTab => event => {
         setSelectedTab(selectTab);
@@ -392,9 +394,17 @@ export const NavBar = (props) => {
 
                    <SVGIcon name="user" width="25" height="25" style={{fill:"#fff",margin:"0 5px"}}/>
                    <RegisterTextContainer style={{marginRight:20,color:"#fff"}}>
-                       <RegisterText>Login</RegisterText>
+                       <RegisterText
+                       onClick={(e)=>{
+                        setSelectedHomeModal("login");
+                        setHomeModalOpen(true)
+                       }}
+                       >Login</RegisterText>
                        /
-                       <RegisterText>Register</RegisterText>
+                       <RegisterText onClick={()=>{
+                           setSelectedHomeModal("register");
+                           setHomeModalOpen(true)
+                       }}>Register</RegisterText>
                        </RegisterTextContainer>
 
 
@@ -406,7 +416,7 @@ export const NavBar = (props) => {
                 </NavBarContainer>}
 
 
-
+<HomeModal  selectedModal={selectedHomeModal}  showModal={homeModalOpen} setShowModal={setHomeModalOpen} setSelectedHomeModal={setSelectedHomeModal}/>
 
 
         </>

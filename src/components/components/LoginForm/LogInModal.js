@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
-import { Modal } from "./LogInForm";
+import { Modal } from "./LoginForm";
 
 const useLogInStyle = makeStyles((theme) => ({
     root: {

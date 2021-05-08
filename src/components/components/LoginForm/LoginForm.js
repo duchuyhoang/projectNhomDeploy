@@ -122,6 +122,7 @@ const Background =styled.div`
 // Log In Form Container
 const LogInForm = styled.div`
     height: 600px;
+    font-family: ${props => props.theme.typography.fontFamily};
     max-width: 812px;
     box-shadow: 0 5px 16px rgba(0 , 0, 0, 0.2);
     background: #fff;
@@ -242,23 +243,17 @@ const UnderButton = styled.div`
         font-size: 14px;
     }}
 `
-export const Modal = ({ showModal, setShowModal }) => {
+export const LoginForm = ({ showModal, setShowModal,setSelectedHomeModal }) => {
     const {isMobile} = useIsMobile();
     const logInFormStyle = useLogInFormStyle();
 
     const modalRef = useRef()
 
-    const closeModal = e => {
-        if (modalRef.current === e.target) {
-            setShowModal(false);
-        }
-    }
-
     const keyPress = useCallback(e=>{
         if(e.key === "Escape" && showModal) {
             setShowModal(false)
         }
-    }, [setShowModal, showModal])
+    }, [showModal])
 
     useEffect(()=> {
         document.addEventListener('keydown', keyPress);
@@ -274,9 +269,7 @@ export const Modal = ({ showModal, setShowModal }) => {
 
     return (
         <>
-        {showModal ? (
-            <Background ref= {modalRef} onClick= {closeModal} className="background">
-                    <LogInForm showModal ={showModal} className="modal">
+                    <LogInForm className="modal">
 
                         <FormLeft isMobile={isMobile} >
                             <ModalImg isMobile={isMobile}  src="https://g5p6r6b9.stackpathcdn.com/homeo/wp-content/uploads/2020/02/bg-login.jpg"
@@ -333,14 +326,15 @@ export const Modal = ({ showModal, setShowModal }) => {
 
                             <UnderButton>
                                 Don't you have an account?
-                                <a href="#"> Register</a>
+                                <a href="#" onClick={(e)=>{
+                                    e.preventDefault();
+                                    setSelectedHomeModal("register");
+                                }}> Register</a>
                             </UnderButton>
                             
                         </ModalContent>
                     
                     </LogInForm>
-            </Background>
-        ): null }
         </>
     )
 }
