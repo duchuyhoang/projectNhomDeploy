@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { Stretcher } from "@Components/components/Stretcher/Stretcher";
-import { Footer }from "@Components/components/Footer/Footer";
+import { Footer } from "@Components/components/Footer/Footer";
+import { HomeModal } from "@Components/components/Modals/HomeModal";
+
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -22,30 +24,29 @@ const useStyles = makeStyles((theme) => {
 
 const Message = ({ message }) => {
     const styles = useStyles();
+    const [isHomeModalShow, setIsHomeModalShow] = useState(false);
 
     })
     return (
         <>
-           
 
-            <CNPagination
-                count={paginationState.total}
-                page={paginationState.currentValue}
-                total={paginationState.total}
-                siblingCount={1}
-                paginationState={paginationState}
-                setPaginationState={setPaginationState}
-            />
-
-
+            <Stretcher>
 
             </Stretcher>
             <Footer>
 
             </Footer>
+            {isHomeModalShow && <HomeModal showModal={isHomeModalShow} setShowModal={setIsHomeModalShow} />}
+
+            <button onClick={() => {
+                setIsHomeModalShow((prev) =>{return !prev})
+            }}>
+                Nhấn
+    </button>
         </>
     )
 
 }
 
 export default Message
+
