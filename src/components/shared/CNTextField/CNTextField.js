@@ -8,7 +8,7 @@ const useTextFiledContentStyles = makeStyles((theme) => ({
     root: (props) => ({
         border: `2px solid #d8d8d8`,
         width: 300,
-        borderRadius: props.type === "largeBorderRadius" ? 50 : 5,
+        borderRadius: props.largeBorderRadius === true ? 50 : 5,
         padding: "6px 20px 6px 0"
         
     }),
@@ -28,9 +28,9 @@ const useTextFiledContentStyles = makeStyles((theme) => ({
 
 }))
 
-export const CNTextField = ({type, inputChange,...rest }) => {
+export const CNTextField = ({largeBorderRadius, inputChange,...rest }) => {
 
-    const textFieledStyles = useTextFiledContentStyles({type});
+    const textFieledStyles = useTextFiledContentStyles({largeBorderRadius});
     return (
         <>
             <Input
