@@ -48,14 +48,18 @@ const usePaginationItemStyles = makeStyles((theme) => {
             transform: "scale(1.1)"
         },
         ellipsis: {
-            fontSize: 16,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center"
+            border: "none",
+            fontSize: 14,
+            color: theme.palette.primary.main,
+            "&:hover": {
+                backgroundColor: "transparent",
+                color: theme.palette.primary.main
+            }
+
         }
     }
 })
-export const CNPagination = ({ page, paginationState, setPaginationState, siblingCount, total, ...rest }) => {
+export const CNPagination = ({ page, paginationState, setPaginationState, total, siblingCount, ...rest }) => {
     const paginationStyles = usePaginationStyles();
     const paginationItemStyles = usePaginationItemStyles();
 
@@ -68,7 +72,7 @@ export const CNPagination = ({ page, paginationState, setPaginationState, siblin
             <Pagination
                 classes={paginationStyles}
                 page={page}
-                siblingCount={siblingCount}
+                siblingCount={1}
                 hideNextButton={page === total}
                 hidePrevButton={page === 1}
                 onChange={paginationHandler}
