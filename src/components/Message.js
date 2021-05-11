@@ -31,9 +31,8 @@ const Message = ({ message }) => {
         
         total: 20,
         currentValue: 5
-        
+    
     })
-    console.log(paginationState)
     return (
         <>
 
