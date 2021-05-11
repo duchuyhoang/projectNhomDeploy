@@ -298,7 +298,7 @@ export const LoginForm = ({ showModal, setShowModal,setSelectedHomeModal }) => {
                                 >
                             </CNTextField>
                             <CNTextField 
-                            type="smallBorderRadius" 
+                            type="password" 
                             placeholder="Enter password"
                             className= {logInFormStyle.textFieldStyle}
                             endAdornment={<SVGIcon name="password" width="15px" height="15px" fill="#006c70" className= {logInFormStyle.iconTextFieldStyle}/>}
