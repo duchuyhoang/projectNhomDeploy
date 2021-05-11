@@ -51,7 +51,7 @@ export const CNAvatar = ({ type, ...rest }) =>{
           />      
         </div>
       : 
-        <div >
+        <div style={{display: 'flex',alignItems: 'center'}}>
           <Avatar alt="avt1"   
             className={avatarStyles.avatar} 
             {...rest}
