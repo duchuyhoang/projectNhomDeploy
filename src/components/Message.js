@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import { Stretcher } from "@Components/components/Stretcher/Stretcher";
-import { Footer } from "@Components/components/Footer/Footer";
-import { HomeModal } from "@Components/components/Modals/HomeModal";
+import { CNSnackBar } from "./shared/CNSnackBar/CNSnackBar";
+import FixedContainer from "@Components/shared/Layout/FixedContainer"
+import { CNNotifications } from "@Components/shared/CNNotifications/CNNotifications";
+import { CNSelect } from "@Components/shared/CNSelect/CNSelect";
+import {CNCheckBox} from '@Components/shared/CNCheckBox/CNCheckBox';
 
-
-const useStyles = makeStyles((theme) => {
+import {CNPagination} from '@Components/shared/CNPagination/CNPagination'
+import {uuid} from '../utils/uuid'
+const useStyles = makeStyles(theme => {
     return {
         style: {
             display: "flex",
@@ -24,24 +27,25 @@ const useStyles = makeStyles((theme) => {
 
 const Message = ({ message }) => {
     const styles = useStyles();
-    const [isHomeModalShow, setIsHomeModalShow] = useState(false);
-
+    const [paginationState,setPaginationState]=useState({
+        
+        total: 20,
+        currentValue: 5
+    
+    })
     return (
         <>
 
-            <Stretcher>
+            <CNPagination
+                count = {paginationState.total}
+                page = {paginationState.currentValue}
+                siblingCount={paginationState.total/12}
+                paginationState={paginationState}
+                setPaginationState={setPaginationState}
+            />
+           
 
-            </Stretcher>
-            <Footer>
 
-            </Footer>
-            {isHomeModalShow && <HomeModal showModal={isHomeModalShow} setShowModal={setIsHomeModalShow} />}
-
-            <button onClick={() => {
-                setIsHomeModalShow((prev) =>{return !prev})
-            }}>
-                Nhấn
-    </button>
         </>
     )
 
