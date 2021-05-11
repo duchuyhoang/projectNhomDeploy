@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import { CNSnackBar } from "./shared/CNSnackBar/CNSnackBar";
-import FixedContainer from "@Components/shared/Layout/FixedContainer"
-import { CNNotifications } from "@Components/shared/CNNotifications/CNNotifications";
-import { CNSelect } from "@Components/shared/CNSelect/CNSelect";
-import {CNCheckBox} from '@Components/shared/CNCheckBox/CNCheckBox';
+import { Stretcher } from "@Components/components/Stretcher/Stretcher";
+import { Footer } from "@Components/components/Footer/Footer";
+import { axiosApi } from "@Core/api/axiosApi";
+import { useDispatch, useSelector } from "react-redux"
+import { authActions } from "@Core/redux/auth";
+import { currentUserActions } from "@Core/redux/user";
+import { useAuth } from "@Core/hooks/useAuth";
 
-import {CNPagination} from '@Components/shared/CNPagination/CNPagination'
-import {uuid} from '../utils/uuid'
-const useStyles = makeStyles(theme => {
+
+
+const useStyles = makeStyles((theme) => {
     return {
         style: {
             display: "flex",
@@ -26,25 +28,30 @@ const useStyles = makeStyles(theme => {
 
 
 const Message = ({ message }) => {
-    const styles = useStyles();
-    const [paginationState,setPaginationState]=useState({
-        
-        total: 20,
-        currentValue: 5
-    
-    })
+    const [isHomeModalShow, setIsHomeModalShow] = useState(false);
+    const dispatch = useDispatch();
+    const state = useSelector(state => state);
+
+    useEffect(async () => {
+        dispatch(authActions.reLogin());
+    }, [])
+
     return (
         <>
+            <Stretcher>
 
-            <CNPagination
-                count = {paginationState.total}
-                page = {paginationState.currentValue}
-                siblingCount={paginationState.total/12}
-                paginationState={paginationState}
-                setPaginationState={setPaginationState}
-            />
-           
+            </Stretcher>
+            <Footer>
 
+            </Footer>
+            {isHomeModalShow && <HomeModal showModal={isHomeModalShow} setShowModal={setIsHomeModalShow} />}
+            <button onClick={() => {
+                dispatch(authActions.userLogin({
+                    email: "huyhoang10032000@gmail.com",
+                    password: "12345"
+                }))
+
+            }}>Login</button>
 
         </>
     )

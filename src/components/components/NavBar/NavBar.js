@@ -5,8 +5,8 @@ import useMediaQuery from "@Core/hooks/useMediaQuery";
 import { SmallScreenNavBar } from "./SmallScreenNavBar";
 import {CNButton} from "@Components/shared/CNButton/CNButton";
 import { HomeModal } from "@Components/components/Modals/HomeModal";
+import {UserInfo} from "./UserInfo";
 import "./NavBar.css"
-
 
 const NavBarContainer = styled.section`
 display:flex;
@@ -392,19 +392,11 @@ const [selectedHomeModal,setSelectedHomeModal]=useState("login");
 
                         <RootItem active={currentTab === "contact"} onClick={handleOver("contact")}>Contact</RootItem>
 
-                   <SVGIcon name="user" width="25" height="25" style={{fill:"#fff",margin:"0 5px"}}/>
-                   <RegisterTextContainer style={{marginRight:20,color:"#fff"}}>
-                       <RegisterText
-                       onClick={(e)=>{
-                        setSelectedHomeModal("login");
-                        setHomeModalOpen(true)
-                       }}
-                       >Login</RegisterText>
-                       /
-                       <RegisterText onClick={()=>{
-                           setSelectedHomeModal("register");
-                           setHomeModalOpen(true)
-                       }}>Register</RegisterText>
+                  
+                   <RegisterTextContainer style={{color:"#fff"}}>
+                      
+<UserInfo setSelectedHomeModal={setSelectedHomeModal} setHomeModalOpen={setHomeModalOpen}/>
+                      
                        </RegisterTextContainer>
 
 
