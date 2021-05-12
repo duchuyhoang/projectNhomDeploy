@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import { CNSnackBar } from "./shared/CNSnackBar/CNSnackBar";
-import FixedContainer from "@Components/shared/Layout/FixedContainer"
-import { CNNotifications } from "@Components/shared/CNNotifications/CNNotifications";
-import { CNSelect } from "@Components/shared/CNSelect/CNSelect";
-import { CNCheckBox } from '@Components/shared/CNCheckBox/CNCheckBox';
+import { Stretcher } from "@Components/components/Stretcher/Stretcher";
+import { Footer } from "@Components/components/Footer/Footer";
+import { useDispatch, useSelector } from "react-redux"
+import { authActions } from "@Core/redux/auth";
+import { SVGIcon } from "@Components/shared/SvgIcon/Icon";
+import { CooperateForm } from "./components/CooperateForm/CooperateForm";
+import {CNSelect} from "@Components/shared/CNSelect/CNSelect";
+import { components } from 'react-select'
 
-import { CNPagination } from '@Components/shared/CNPagination/CNPagination'
-import { uuid } from '../utils/uuid'
-import { ServiceComponent } from './components/ServiceComponent/ServiceComponent'
-const useStyles = makeStyles(theme => {
+
+const useStyles = makeStyles((theme) => {
     return {
         style: {
             display: "flex",
@@ -24,6 +25,17 @@ const useStyles = makeStyles(theme => {
     }
 }
 )
+
+const DropdownIndicator=(props)=>{
+    return (
+        components.DropdownIndicator && (
+            <components.DropdownIndicator {...props}>
+                <SVGIcon name="userGroup" width="20px" />
+            </components.DropdownIndicator>
+    )
+    )
+}
+
 
 
 const Message = ({ message }) => {
@@ -54,8 +66,22 @@ const Message = ({ message }) => {
     }])
     return (
         <>
-        
-            <ServiceComponent cardList={cardList} setCardList={setCardList} />
+            <CooperateForm></CooperateForm>
+            <CNSelect customComponents={{DropdownIndicator}}/>
+            <Stretcher>
+
+            </Stretcher>
+            <Footer>
+
+            </Footer>
+            {isHomeModalShow && <HomeModal showModal={isHomeModalShow} setShowModal={setIsHomeModalShow} />}
+            <button onClick={() => {
+                dispatch(authActions.userLogin({
+                    email: "huyhoang10032000@gmail.com",
+                    password: "12345"
+                }))
+
+            }}>Login</button>
 
         </>
     )
