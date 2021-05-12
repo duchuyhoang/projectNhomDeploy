@@ -56,7 +56,11 @@ devServer:{
                 test: /\.svg$/,
                 use: ['@svgr/webpack'],
               },
-
+              { test: /\.(woff|woff2|eot|ttf)$/,
+                use:[
+                    {loader: 'url-loader?limit=100000'}
+                ]
+                 }
         ]
     },
 

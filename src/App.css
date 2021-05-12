@@ -1,6 +1,6 @@
-.helloWorld{
-    color:red;
-    text-align: center;
+html,body{
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 
