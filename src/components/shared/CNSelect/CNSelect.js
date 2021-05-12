@@ -90,7 +90,7 @@ const CustomOption = (props) => {
 
 
 
-export const CNSelect = ({options,...rest}) => {
+export const CNSelect = ({options,customComponents,...rest}) => {
     const [selectWidth, setSelectWidth] = useState("20%");
 
 
@@ -120,7 +120,7 @@ export const CNSelect = ({options,...rest}) => {
 
     return (
         <Select options={options}
-            components={{ DropdownIndicator, Option: CustomOption }}
+            components={{ DropdownIndicator, Option: CustomOption,...customComponents }}
             isClearable={true}
             isSearchable={false}
             styles={styles}
