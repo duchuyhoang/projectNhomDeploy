@@ -5,7 +5,7 @@ import { Footer } from "@Components/components/Footer/Footer";
 import { useDispatch, useSelector } from "react-redux"
 import { authActions } from "@Core/redux/auth";
 import { SVGIcon } from "@Components/shared/SvgIcon/Icon";
-
+import { CooperateForm } from "./components/CooperateForm/CooperateForm";
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -36,6 +36,7 @@ const Message = ({ message }) => {
     return (
         <>
         <SVGIcon name="calculator" width="100" height="100"/>
+            <CooperateForm></CooperateForm>
             <Stretcher>
 
             </Stretcher>
