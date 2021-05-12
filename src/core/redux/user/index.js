@@ -46,7 +46,7 @@ const userSlice = createSlice({
         // firstName: null,
         // middleName: null,
         // lastName: null,
-        userInfo:null,
+        user:null,
         loading: "idle",
         error: null,
     },

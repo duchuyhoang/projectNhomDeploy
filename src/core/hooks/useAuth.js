@@ -1,6 +1,6 @@
-import React,{useEffect} from "react";
+import React,{useEffect,useCallback} from "react";
 import { useSelector,useDispatch } from "react-redux"
-import {authSelectors} from "@Core/redux/auth"
+import {authSelectors,authActions} from "@Core/redux/auth"
 import {currentUserActions,currentUserSelectors} from "@Core/redux/user";
 
 
@@ -12,16 +12,27 @@ const user=useSelector(currentUserSelectors.selectUserInfo);
 const dispatch=useDispatch();
 
 useEffect(() => {
+    if(isLogin && !user)
 dispatch(currentUserActions.getCurrentUser({id:userId}))
 
 },[userId,isLogin]);
 
+const signOut=useCallback(()=>{
+dispatch(authActions.logOut());
+})
+
+const signIn=useCallback((data)=>{
+    // Data is email and password we will destructure it later
+    dispatch(authActions.userLogin(data));
+},[])
 
 
 
 return {
     ...isLogin,
     ...user,
+    signOut,
+    signIn
 }
 
 }

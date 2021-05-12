@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { axiosApi } from "@Core/api/axiosApi";
-import { getCookie } from "../../cookies/cookie";
+import { getCookie, setCookie } from "../../cookies/cookie";
 import { parseJwt } from "@Ultis/jwt";
 import { createSelector } from "reselect"
 
@@ -34,6 +34,19 @@ const reLogin = createAsyncThunk("auth/re_login", async (payload, { rejectWithVa
 })
 
 
+const logOut = createAsyncThunk("auth/log_out", async (payload, { rejectWithValue }) => {
+    try {
+        // Can api here
+        setCookie("cn11_refresh_token", null, 0);
+        setCookie("cn11_access_token", null, 0);
+        return null;
+    }
+    catch (err) {
+        return rejectWithValue({ message: "Error while signout" })
+    }
+})
+
+
 // Selector
 
 const selectSelf = (state) => state.auth
@@ -56,9 +69,9 @@ const selectIsLogin = createSelector(
     })
 
 
-const selectCurrentUserId=createSelector(
+const selectCurrentUserId = createSelector(
     selectSelf,
-    (state)=>state.id
+    (state) => state.id
 )
 
 
@@ -115,7 +128,18 @@ const authSlice = createSlice({
                 state.refreshToken = null
             })
 
-
+// Sign out
+builder.addCase(logOut.pending, (state, action) => {
+    state.login = "pending"
+})
+    .addCase(logOut.fulfilled, (state, action) => {
+        state.id = null;
+        state.loading = "idle";
+        state.accessToken = null;
+        state.refreshToken = null
+    })
+    .addCase(logOut.rejected, (state, action) => {
+    })
 
     }
 
@@ -124,7 +148,8 @@ const authSlice = createSlice({
 
 export const authActions = {
     userLogin,
-    reLogin
+    reLogin,
+    logOut
 }
 
 
