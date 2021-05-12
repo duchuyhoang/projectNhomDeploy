@@ -1,7 +1,12 @@
 import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import useIsMobile from "@Core/hooks/useIsMobile";
-import styled, { keyframes} from 'styled-components';
+import styled, {css, keyframes} from 'styled-components';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
+import "./CooperateForm.css"
+
 
 const useCooperateStyles = makeStyles((theme) => ({
 
@@ -74,52 +79,87 @@ const CompanyImg = styled.img`
 `
 const CompanyLink = styled.a``
 
+const companies = [
+  {
+    name: 'com1',
+    url: 'https://g5p6r6b9.stackpathcdn.com/homeo/wp-content/uploads/2020/02/brand01.png'
+  },
+  {
+    name: 'com2',
+    url: 'https://g5p6r6b9.stackpathcdn.com/homeo/wp-content/uploads/2020/02/brand03.png'
+  },
+  {
+    name: 'com3',
+    url: 'https://g5p6r6b9.stackpathcdn.com/homeo/wp-content/uploads/2020/02/brand05.png'
+  },
+  {
+    name: 'com4',
+    url: 'https://g5p6r6b9.stackpathcdn.com/homeo/wp-content/uploads/2020/02/brand04.png'
+  },
+  {
+    name: 'com5',
+    url: 'https://g5p6r6b9.stackpathcdn.com/homeo/wp-content/uploads/2020/02/brand06.png'
+  },
+]
+
+const settings = {
+  dots: false,
+  speed: 500,
+  slidesToShow: 2,
+  slidesToScroll: 2,
+  rows: 1,
+  Swipe: true,
+  infinite:true,
+}
+
 export const CooperateForm = (props) => {
   const { isMobile } = useIsMobile();
 
   const cooperateStyles = useCooperateStyles()
 
+  
   return (
     <>
-        <CooperateContainer>
-            <CooperateText>
-                <HeaderCooperate>Our Partners</HeaderCooperate>
-                <BodyCooperate>We only work with the best companies around the globe</BodyCooperate>
-            </CooperateText>
-            <CooperateImg>
-            <CompanyList>
-              <CompanyItem>
-                <CompanyLink href="#">
-                  <CompanyImg alt="Image" src="https://g5p6r6b9.stackpathcdn.com/homeo/wp-content/uploads/2020/02/brand01.png"></CompanyImg>
-                </CompanyLink>
-              </CompanyItem>
-              <CompanyItem>
-                <CompanyLink href="#">
-                  <CompanyImg alt="Image" src="https://g5p6r6b9.stackpathcdn.com/homeo/wp-content/uploads/2020/02/brand03.png"></CompanyImg>
-                </CompanyLink>
-              </CompanyItem>
-              <CompanyItem>
-                <CompanyLink href="#">
-                  <CompanyImg alt="Image" src="https://g5p6r6b9.stackpathcdn.com/homeo/wp-content/uploads/2020/02/brand05.png"></CompanyImg>
-                </CompanyLink>
-              </CompanyItem>
-              <CompanyItem>
-                <CompanyLink href="#">
-                  <CompanyImg alt="Image" src="https://g5p6r6b9.stackpathcdn.com/homeo/wp-content/uploads/2020/02/brand04.png"></CompanyImg>
-                </CompanyLink>
-              </CompanyItem>
-              <CompanyItem>
-                <CompanyLink href="#">
-                  <CompanyImg alt="Image" src="https://g5p6r6b9.stackpathcdn.com/homeo/wp-content/uploads/2020/02/brand06.png"></CompanyImg>
-                </CompanyLink>
-              </CompanyItem>
-            </CompanyList>
+      <CooperateContainer>
+        <CooperateText>
+            <HeaderCooperate>Our Partners</HeaderCooperate>
+            <BodyCooperate>We only work with the best companies around the globe</BodyCooperate>
+        </CooperateText>
+        <CooperateImg>
+          
+            {isMobile ? 
+              <Slider {...settings}>
+                {companies.map( (company) => {
+                  return (
+                    <CompanyItem>
+                      <CompanyLink href="#">
+                        <CompanyImg alt={company.name} src={company.url}></CompanyImg>
+                      </CompanyLink>
+                    </CompanyItem>
+                  )
+                })}
+              </Slider>  
+            :
+              <>
+              <CompanyList>
+                {companies.map(company => {
+                    return (
+                      <CompanyItem>
+                        <CompanyLink href="#">
+                          <CompanyImg alt={company.name} src={company.url}></CompanyImg>
+                        </CompanyLink>
+                      </CompanyItem>
+                    )
+                  })}
+                  </CompanyList>
+              </>
+          
+            } 
+          {/* </CompanyList> */}
+        </CooperateImg>
+    </CooperateContainer>
+  </>
 
-            </CooperateImg>
-        </CooperateContainer>
-
-    </>
   )
-
 }
 
