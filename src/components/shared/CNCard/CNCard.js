@@ -37,15 +37,14 @@ const useCardActionsStyles = makeStyles((theme) => ({
 
 
 
-export const CNCard = (props) => {
+export const CNCard = ({ headerComponent, bodyComponent, footerComponent,...rest }) => {
 
-  const { headerComponent, bodyComponent, footerComponent } = props;
   const cardStyles = useCardStyles()
   const cardContentStyles = useCardContentStyles();
   const cardActionsStyles = useCardActionsStyles();
 
   return (
-    <Card classes={cardStyles}>
+    <Card classes={cardStyles} {...rest}>
       {headerComponent}
       <CardContent classes={cardContentStyles}>
         {bodyComponent}

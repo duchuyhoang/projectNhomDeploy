@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import { Stretcher } from "@Components/components/Stretcher/Stretcher";
-import { Footer } from "@Components/components/Footer/Footer";
-import { useDispatch, useSelector } from "react-redux"
-import { authActions } from "@Core/redux/auth";
-import { SVGIcon } from "@Components/shared/SvgIcon/Icon";
-import { CooperateForm } from "./components/CooperateForm/CooperateForm";
+import { CNSnackBar } from "./shared/CNSnackBar/CNSnackBar";
+import FixedContainer from "@Components/shared/Layout/FixedContainer"
+import { CNNotifications } from "@Components/shared/CNNotifications/CNNotifications";
+import { CNSelect } from "@Components/shared/CNSelect/CNSelect";
+import { CNCheckBox } from '@Components/shared/CNCheckBox/CNCheckBox';
 
-const useStyles = makeStyles((theme) => {
+import { CNPagination } from '@Components/shared/CNPagination/CNPagination'
+import { uuid } from '../utils/uuid'
+import { ServiceComponent } from './components/ServiceComponent/ServiceComponent'
+const useStyles = makeStyles(theme => {
     return {
         style: {
             display: "flex",
@@ -25,32 +27,35 @@ const useStyles = makeStyles((theme) => {
 
 
 const Message = ({ message }) => {
-    const [isHomeModalShow, setIsHomeModalShow] = useState(false);
-    const dispatch = useDispatch();
-    const state = useSelector(state => state);
-    useEffect(async () => {
-        // If cookie re login
-        dispatch(authActions.reLogin());
-    }, [])
 
+    const [cardList, setCardList] = useState([{
+        SVGIcon: "highFive",
+        title: "Trusted By Thousands",
+        description: "Aliquam dictum elit vitae mauris facilisis at dictum vitae mauris  urna dignissim donec vel lectus vel felis."
+    },
+    {
+        SVGIcon: "home",
+        title: "Wide Renge Of Properties",
+        description: "Aliquam dictum elit vitae mauris facilisis at dictum vitae mauris  urna dignissim donec vel lectus vel felis."
+    },
+    {
+        SVGIcon: "profitcalculator",
+        title: "Financing Made Easy",
+        description: "Aliquam dictum elit vitae mauris facilisis at dictum vitae mauris  urna dignissim donec vel lectus vel felis."
+    }, {
+        SVGIcon: "home",
+        title: "Wide Renge Of Properties",
+        description: "Aliquam dictum elit vitae mauris facilisis at dictum vitae mauris  urna dignissim donec vel lectus vel felis."
+    },
+    {
+        SVGIcon: "profitcalculator",
+        title: "Financing Made Easy",
+        description: "Aliquam dictum elit vitae mauris facilisis at dictum vitae mauris  urna dignissim donec vel lectus vel felis."
+    }])
     return (
         <>
-        <SVGIcon name="calculator" width="100" height="100"/>
-            <CooperateForm></CooperateForm>
-            <Stretcher>
-
-            </Stretcher>
-            <Footer>
-
-            </Footer>
-            {isHomeModalShow && <HomeModal showModal={isHomeModalShow} setShowModal={setIsHomeModalShow} />}
-            <button onClick={() => {
-                dispatch(authActions.userLogin({
-                    email: "huyhoang10032000@gmail.com",
-                    password: "12345"
-                }))
-
-            }}>Login</button>
+        
+            <ServiceComponent cardList={cardList} setCardList={setCardList} />
 
         </>
     )
