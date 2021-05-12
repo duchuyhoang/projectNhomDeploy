@@ -2,12 +2,9 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { Stretcher } from "@Components/components/Stretcher/Stretcher";
 import { Footer } from "@Components/components/Footer/Footer";
-import { axiosApi } from "@Core/api/axiosApi";
 import { useDispatch, useSelector } from "react-redux"
 import { authActions } from "@Core/redux/auth";
-import { currentUserActions } from "@Core/redux/user";
-import { useAuth } from "@Core/hooks/useAuth";
-
+import { SVGIcon } from "@Components/shared/SvgIcon/Icon";
 
 
 const useStyles = makeStyles((theme) => {
@@ -31,13 +28,14 @@ const Message = ({ message }) => {
     const [isHomeModalShow, setIsHomeModalShow] = useState(false);
     const dispatch = useDispatch();
     const state = useSelector(state => state);
-
     useEffect(async () => {
+        // If cookie re login
         dispatch(authActions.reLogin());
     }, [])
 
     return (
         <>
+        <SVGIcon name="calculator" width="100" height="100"/>
             <Stretcher>
 
             </Stretcher>

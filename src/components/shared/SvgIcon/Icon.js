@@ -27,6 +27,9 @@ import Plus from "@Assets/svg/Plus.svg"
 import Search from "@Assets/svg/search.svg"
 import ArrowRight from "@Assets/svg/arrowright.svg"
 import ArrowLeft from "@Assets/svg/arrowleft.svg"
+import SignOut from "@Assets/svg/signout.svg"
+import DashBoard from "@Assets/svg/dashBoard.svg"
+import Message from "@Assets/svg/message.svg"
 
 const IconMap={
 logo:Logo,
@@ -57,6 +60,9 @@ plus:Plus,
 search:Search,
 arrowright:ArrowRight,
 arrowleft:ArrowLeft,
+signout:SignOut,
+dashBoard:DashBoard,
+message:Message
 }
 
 
