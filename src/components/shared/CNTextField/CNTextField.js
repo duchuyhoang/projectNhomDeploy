@@ -1,7 +1,7 @@
 import Input from '@material-ui/core/Input';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
-import { Controller } from 'react-hook-form';
+// import { Controller } from 'react-hook-form';
 import '../CNTextField/CNTextField.css';
 
 const useTextFiledContentStyles = makeStyles((theme) => ({
@@ -35,24 +35,23 @@ export const CNTextField = ({
 }) => {
   const textFieledStyles = useTextFiledContentStyles({ largeBorderRadius });
   return (
-    <Controller
-      name={name}
-      control={form.control}
-      render={({ field: { onChange, onBlur, value, name }, formState }) => (
-        <Input
-          disableUnderline={true}
-          classes={textFieledStyles}
-          onChange={inputChange}
-          inputProps={{
-            'aria-label': 'Description',
-          }}
-          name={name}
-          onBlur={onBlur}
-          onChange={onChange}
-          value={value}
-          {...rest}
-        />
-      )}
-    />
+    // <Controller
+    //   name={name}
+    //   control={form.control}
+    //   render={({ field: { onChange, onBlur, value, name }, formState }) => (
+
+      <Input
+             
+      disableUnderline={true}
+      classes={textFieledStyles}
+      onChange={inputChange}
+      inputProps={{
+          'aria-label': 'Description',
+      }}
+      {...rest}
+   
+  />
+    //   )}
+    // />
   );
 };

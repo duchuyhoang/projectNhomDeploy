@@ -4,9 +4,9 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useButtonStyles = makeStyles((theme) => ({
   root: (props) => ({
-    backgroundColor: props.type === "main" ? theme.palette.primary.main : "#24334A",
-    color: props.type==="main" ? theme.palette.primary.main : "#24334A",
-    borderRadius: props.type==="main" ? "6px" : "20px",
+    backgroundColor: props.buttonType === "main" ? theme.palette.primary.main : "#24334A",
+    color: props.buttonType==="main" ? theme.palette.primary.main : "#24334A",
+    borderRadius: props.buttonType==="main" ? "6px" : "20px",
     margin:"10px 0",
     minWidth:"130px",
     height:"50px",
@@ -21,14 +21,14 @@ const useButtonStyles = makeStyles((theme) => ({
   }),
   outlined: (props) => ({
     border: "2px solid",
-    borderColor: props.type === "main" ? theme.palette.primary.main : " #24334A",
+    borderColor: props.buttonType === "main" ? theme.palette.primary.main : " #24334A",
   })
 })
 
 )
 
-export const CNButton = ({ type,children ,...rest }) => {
-  const buttonStyle = useButtonStyles({ type })
+export const CNButton = ({ buttonType,children ,...rest }) => {
+  const buttonStyle = useButtonStyles({ buttonType })
   const [variant, setVariant] = useState("contained")
   function setHoverIn() {
     setVariant("outlined")

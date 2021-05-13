@@ -4,7 +4,7 @@ import { SVGIcon } from '@Components/shared/SvgIcon/Icon';
 import useIsMobile from '@Core/hooks/useIsMobile';
 import { makeStyles } from '@material-ui/core';
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { components } from 'react-select';
 import styled, { keyframes } from 'styled-components';
 import { CNButton } from '../../shared/CNButton/CNButton';
@@ -141,18 +141,18 @@ function RegisterForm({ setSelectedHomeModal, setShowModal, showModal }) {
     );
   };
   const options = [
-    { value: 'selectRole', label: 'Select Role' },
     { value: 'user', label: 'User' },
     { value: 'agent', label: 'Agent' },
     { value: 'agency', label: 'Agency' },
   ];
 
-  const form = useForm({
+  const { handleSubmit, control } = useForm({
     defaultValues: {
       userName: '',
       email: '',
       password: '',
-      // retypePassword: '',
+      retypePassword: '',
+      role: null,
     },
   });
 
@@ -180,59 +180,104 @@ function RegisterForm({ setSelectedHomeModal, setShowModal, showModal }) {
             />
           </FormClose>
         </ContentHeader>
-        <form onSubmit={form.handleSubmit(handleSubmit)}>
-          <CNTextField
+        <form onSubmit={handleSubmit((value) => {
+          console.log(value);
+        })}>
+
+          <Controller
+            control={control}
             name="userName"
-            type="text"
-            form={form}
-            placeholder="User name"
-            className={RegisterStyle.textFieldStyle}
-            endAdornment={<SVGIcon name="user" width="21px" height="21px" />}
-            fullWidth
-          ></CNTextField>
-          <CNTextField
+            render={({ field: { onChange } }) => (
+              <CNTextField
+                type="text"
+                placeholder="User name"
+                className={RegisterStyle.textFieldStyle}
+                endAdornment={<SVGIcon name="user" width="21px" height="21px" />}
+                fullWidth
+                inputChange={onChange}
+              ></CNTextField>
+            )}
+          />
+
+          <Controller
+            control={control}
             name="email"
-            type="email"
-            placeholder="Email"
-            form={form}
-            className={RegisterStyle.textFieldStyle}
-            fullWidth
-            endAdornment={<SVGIcon name="user" width="21px" height="21px" />}
-          ></CNTextField>
-          <CNTextField
+            autoComplete="new-email"
+            render={({ field: { onChange } }) => (
+              <CNTextField
+                type="email"
+                placeholder="Email"
+                className={RegisterStyle.textFieldStyle}
+                fullWidth
+                endAdornment={<SVGIcon name="user" width="21px" height="21px" />}
+                inputChange={onChange}
+              />
+            )}
+
+          />
+
+          <Controller
+            control={control}
             name="password"
-            type="password"
-            placeholder="Password"
-            form={form}
-            className={RegisterStyle.textFieldStyle}
-            fullWidth
-            endAdornment={
-              <SVGIcon name="password" width="21px" height="21px" />
-            }
-          ></CNTextField>
-          <CNTextField
+            render={({ field: { onChange } }) => (
+              <CNTextField
+                autoComplete="new-password"
+                type="password"
+                placeholder="Password"
+                className={RegisterStyle.textFieldStyle}
+                fullWidth
+                endAdornment={
+                  <SVGIcon name="password" width="21px" height="21px" />
+                }
+                name="password"
+                inputChange={onChange}
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
             name="retypePassword"
-            type="password"
-            placeholder="Re-enter Password"
-            form={form}
-            fullWidth
-            className={RegisterStyle.textFieldStyle}
-            endAdornment={
-              <SVGIcon name="password" width="21px" height="21px" />
-            }
-          ></CNTextField>
-          <CNSelect
-            options={options}
-            placeholder="Select Role"
-            isClearable={false}
-            width={'100%'}
-            customComponents={{ DropdownIndicator }}
-            // className={RegisterStyle.selectStyle}
-          ></CNSelect>
+            render={({ field: { onChange } }) => (
+              <CNTextField
+                type="password"
+                placeholder="Re-enter Password"
+                fullWidth
+                className={RegisterStyle.textFieldStyle}
+                endAdornment={
+                  <SVGIcon name="password" width="21px" height="21px" />
+                }
+                inputChange={onChange}
+              ></CNTextField>
+            )}
+
+          />
+
+          <Controller
+            control={control}
+            name="role"
+            render={({ field: { onChange } }) => (
+              <CNSelect
+                options={options}
+                placeholder="Select Role"
+                width={'100%'}
+                customComponents={{ DropdownIndicator }}
+                onChange={(e) => {
+                  // Log to view what is in here
+                  console.log(e);
+                  onChange(e ? e.value : null)
+                }}
+                className={RegisterStyle.selectStyle}
+              />
+            )}
+
+          />
+
           <CNButton
             name="registerSubmit"
-            type="main"
+            buttonType="main"
             fullWidth
+            type="submit"
             className={RegisterStyle.buttonStyle}
           >
             Register
