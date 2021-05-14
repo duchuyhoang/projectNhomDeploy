@@ -2,11 +2,14 @@ import { CNSelect } from '@Components/shared/CNSelect/CNSelect';
 import { CNTextField } from '@Components/shared/CNTextField/CNTextField';
 import { SVGIcon } from '@Components/shared/SvgIcon/Icon';
 import useIsMobile from '@Core/hooks/useIsMobile';
-import { makeStyles } from '@material-ui/core';
-import React from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormControl, FormHelperText, makeStyles } from '@material-ui/core';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import React, { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { components } from 'react-select';
 import styled, { keyframes } from 'styled-components';
+import * as yup from 'yup';
 import { CNButton } from '../../shared/CNButton/CNButton';
 
 RegisterForm.propTypes = {};
@@ -20,6 +23,9 @@ const useRegisterStyle = makeStyles((theme) => ({
     margin: '0',
   },
   textFieldStyle: {
+    error: {
+      border: '1px solid red!important',
+    },
     border: '1px solid #ccc',
     height: '50px',
     '&>input': {
@@ -32,6 +38,20 @@ const useRegisterStyle = makeStyles((theme) => ({
     fontSize: '16px',
     fontWeight: '700',
     textTransform: 'none',
+    margin: '0',
+  },
+  formStyle: {
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: '80%',
+    marginTop: '30px',
+  },
+  helperTextStyles: {
+    color: 'red',
+    position: 'absolute',
+    bottom: '-18px',
   },
 }));
 
@@ -59,9 +79,9 @@ const upToDown = keyframes`
 
 //styled component
 const FormRegister = styled.div`
-  max-height: ${(props) => (props.isMobile ? '240' : '690')}px;
+  height: ${(props) => (props.isMobile ? '600' : '660')}px;
   font-family: ${(props) => props.theme.typography.fontFamily};
-  max-width: 810px;
+  width: ${(props) => (props.isMobile ? '90%' : '810px')};
   box-shadow: 0 5px 16px rgba(0, 0, 0, 0.2);
   background: #fff;
   color: #000;
@@ -71,10 +91,12 @@ const FormRegister = styled.div`
   padding: 15px;
   box-sizing: border-box;
   vertical-align: middle;
+  border-radius: 6px;
   animation: ${upToDown} ease-in-out 0.3s;
 `;
 const FormLeft = styled.div`
   width: 50%;
+  width: ${(props) => (props.isMobile ? '0' : '50%')};
   border-radius: 5px;
   overflow: hidden;
   flex-shrink: 0;
@@ -85,14 +107,7 @@ const Img = styled.img`
 `;
 const FormContent = styled.div`
   flex-grow: 1;
-  padding: 15px 30px;
-  padding-top: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: column;
-  max-height: 500px;
-  /* background-color: #aaa; */
+  padding: ${(props) => (props.isMobile ? '0' : '10px 30px 15px')};
 `;
 const ContentHeader = styled.div`
   display: flex;
@@ -145,8 +160,34 @@ function RegisterForm({ setSelectedHomeModal, setShowModal, showModal }) {
     { value: 'agent', label: 'Agent' },
     { value: 'agency', label: 'Agency' },
   ];
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRetypePassword, setRetypeShowPassword] = useState(false);
 
-  const { handleSubmit, control } = useForm({
+  const toggleShowPassword = () => {
+    setShowPassword((x) => !x);
+  };
+  const toggleShowRetypePassword = () => {
+    setRetypeShowPassword((x) => !x);
+  };
+  const schema = yup.object().shape({
+    userName: yup
+      .string()
+      .required('Please enter your User name')
+      .min(4, 'Username too short. At least 4 characters is required,'),
+    email: yup
+      .string()
+      .required('Please enter your email')
+      .email('Email is not valid'),
+    password: yup
+      .string()
+      .required('Please enter your password')
+      .min(6, 'Password length must be greater than 5'),
+    retypePassword: yup
+      .string()
+      .oneOf([yup.ref('password')], 'Password must be equal Confirm Password'),
+  });
+
+  const { handleSubmit, control, formState } = useForm({
     defaultValues: {
       userName: '',
       email: '',
@@ -154,20 +195,24 @@ function RegisterForm({ setSelectedHomeModal, setShowModal, showModal }) {
       retypePassword: '',
       role: null,
     },
+    resolver: yupResolver(schema),
   });
+  console.log('Error:', formState.errors);
+  const handleResgisterSubmit = (values) => {
+    console.log(values);
+  };
 
   return (
     <FormRegister isMobile={isMobile}>
-      <FormLeft>
+      <FormLeft isMobile={isMobile}>
         <Img
-          isMobile={isMobile}
           src={
             'https://g5p6r6b9.stackpathcdn.com/homeo/wp-content/uploads/2020/02/bg-register.jpg'
           }
           alt="room"
         />
       </FormLeft>
-      <FormContent>
+      <FormContent isMobile={isMobile}>
         <ContentHeader>
           <ContentTitle>Register</ContentTitle>
           <FormClose>
@@ -180,22 +225,30 @@ function RegisterForm({ setSelectedHomeModal, setShowModal, showModal }) {
             />
           </FormClose>
         </ContentHeader>
-        <form onSubmit={handleSubmit((value) => {
-          console.log(value);
-        })}>
-
+        <form
+          className={RegisterStyle.formStyle}
+          onSubmit={handleSubmit(handleResgisterSubmit)}
+        >
           <Controller
             control={control}
             name="userName"
             render={({ field: { onChange } }) => (
-              <CNTextField
-                type="text"
-                placeholder="User name"
-                className={RegisterStyle.textFieldStyle}
-                endAdornment={<SVGIcon name="user" width="21px" height="21px" />}
-                fullWidth
-                inputChange={onChange}
-              ></CNTextField>
+              <FormControl fullWidth>
+                <CNTextField
+                  type="text"
+                  placeholder="User name"
+                  className={RegisterStyle.textFieldStyle}
+                  error={!!formState.errors['userName']}
+                  endAdornment={
+                    <SVGIcon name="user" width="21px" height="21px"></SVGIcon>
+                  }
+                  fullWidth
+                  inputChange={onChange}
+                />
+                <FormHelperText className={RegisterStyle.helperTextStyles}>
+                  {formState.errors['userName']?.message}
+                </FormHelperText>
+              </FormControl>
             )}
           />
 
@@ -204,34 +257,56 @@ function RegisterForm({ setSelectedHomeModal, setShowModal, showModal }) {
             name="email"
             autoComplete="new-email"
             render={({ field: { onChange } }) => (
-              <CNTextField
-                type="email"
-                placeholder="Email"
-                className={RegisterStyle.textFieldStyle}
-                fullWidth
-                endAdornment={<SVGIcon name="user" width="21px" height="21px" />}
-                inputChange={onChange}
-              />
+              <FormControl fullWidth>
+                <CNTextField
+                  type="text"
+                  placeholder="Email"
+                  error={!!formState.errors['email']}
+                  className={RegisterStyle.textFieldStyle}
+                  fullWidth
+                  endAdornment={
+                    <SVGIcon name="user" width="21px" height="21px" />
+                  }
+                  inputChange={onChange}
+                />
+                <FormHelperText className={RegisterStyle.helperTextStyles}>
+                  {formState.errors['email']?.message}
+                </FormHelperText>
+              </FormControl>
             )}
-
           />
 
           <Controller
             control={control}
             name="password"
             render={({ field: { onChange } }) => (
-              <CNTextField
-                autoComplete="new-password"
-                type="password"
-                placeholder="Password"
-                className={RegisterStyle.textFieldStyle}
-                fullWidth
-                endAdornment={
-                  <SVGIcon name="password" width="21px" height="21px" />
-                }
-                name="password"
-                inputChange={onChange}
-              />
+              <FormControl fullWidth>
+                <CNTextField
+                  autoComplete="new-password"
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Password"
+                  className={RegisterStyle.textFieldStyle}
+                  error={!!formState.errors['password']}
+                  fullWidth
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <SVGIcon
+                        name="password"
+                        width="21px"
+                        height="21px"
+                        aria-label="toggle password visibility"
+                        onClick={toggleShowPassword}
+                        style={{ cursor: 'pointer' }}
+                      />
+                    </InputAdornment>
+                  }
+                  name="password"
+                  inputChange={onChange}
+                />
+                <FormHelperText className={RegisterStyle.helperTextStyles}>
+                  {formState.errors['password']?.message}
+                </FormHelperText>
+              </FormControl>
             )}
           />
 
@@ -239,18 +314,32 @@ function RegisterForm({ setSelectedHomeModal, setShowModal, showModal }) {
             control={control}
             name="retypePassword"
             render={({ field: { onChange } }) => (
-              <CNTextField
-                type="password"
-                placeholder="Re-enter Password"
-                fullWidth
-                className={RegisterStyle.textFieldStyle}
-                endAdornment={
-                  <SVGIcon name="password" width="21px" height="21px" />
-                }
-                inputChange={onChange}
-              ></CNTextField>
+              <FormControl fullWidth>
+                <CNTextField
+                  type={showRetypePassword ? 'text' : 'password'}
+                  placeholder="Re-enter Password"
+                  fullWidth
+                  error={!!formState.errors['retypePassword']}
+                  className={RegisterStyle.textFieldStyle}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <SVGIcon
+                        name="password"
+                        width="21px"
+                        height="21px"
+                        aria-label="toggle password visibility"
+                        onClick={toggleShowRetypePassword}
+                        style={{ cursor: 'pointer' }}
+                      />
+                    </InputAdornment>
+                  }
+                  inputChange={onChange}
+                ></CNTextField>
+                <FormHelperText className={RegisterStyle.helperTextStyles}>
+                  {formState.errors['retypePassword']?.message}
+                </FormHelperText>
+              </FormControl>
             )}
-
           />
 
           <Controller
@@ -265,12 +354,11 @@ function RegisterForm({ setSelectedHomeModal, setShowModal, showModal }) {
                 onChange={(e) => {
                   // Log to view what is in here
                   console.log(e);
-                  onChange(e ? e.value : null)
+                  onChange(e ? e.value : null);
                 }}
                 className={RegisterStyle.selectStyle}
               />
             )}
-
           />
 
           <CNButton

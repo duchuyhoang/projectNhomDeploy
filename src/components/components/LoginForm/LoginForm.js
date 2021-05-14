@@ -274,92 +274,63 @@ export const LoginForm = ({
 
   return (
     <>
-      <LogInForm className='modal'>
+      <LogInForm className="modal">
         <FormLeft isMobile={isMobile}>
           <ModalImg
             isMobile={isMobile}
-            src='https://g5p6r6b9.stackpathcdn.com/homeo/wp-content/uploads/2020/02/bg-login.jpg'
-            alt='room'
+            src="https://g5p6r6b9.stackpathcdn.com/homeo/wp-content/uploads/2020/02/bg-login.jpg"
+            alt="room"
           />
         </FormLeft>
 
         <ModalContent>
           <HeaderLogIn>
             <HeaderLogInText>Login</HeaderLogInText>
-            <HeaderLogInClose href='#'>
+            <HeaderLogInClose href="#">
               <SVGIcon
-                name='close'
-                width='10px'
-                height='10px'
-                fill='#006c70'
+                name="close"
+                width="10px"
+                height="10px"
+                fill="#006c70"
                 onClick={() => setShowModal((prev) => !prev)}
               />
             </HeaderLogInClose>
           </HeaderLogIn>
           <CNButton className={logInFormStyle.FbBtnStyle}>
             <SVGIcon
-              name='facebook'
-              width='15px'
-              height='15px'
-              fill='#506dab'
+              name="facebook"
+              width="15px"
+              height="15px"
+              fill="#506dab"
               className={logInFormStyle.IconFbStyle}
             />
             Login with Facebook
           </CNButton>
 
           <CNTextField
-            type='smallBorderRadius'
-            placeholder='Enter usename or email'
+            type="smallBorderRadius"
+            placeholder="Enter usename or email"
             className={logInFormStyle.textFieldStyle}
             endAdornment={
               <SVGIcon
-                name='user'
-                width='15px'
-                height='15px'
-                fill='#006c70'
+                name="user"
+                width="15px"
+                height="15px"
+                fill="#006c70"
                 className={logInFormStyle.iconTextFieldStyle}
               />
             }
           ></CNTextField>
           <CNTextField
-            type='password'
-            placeholder='Enter password'
+            type="password"
+            placeholder="Enter password"
             className={logInFormStyle.textFieldStyle}
             endAdornment={
               <SVGIcon
-                name='password'
-                width='15px'
-                height='15px'
-                fill='#006c70'
-                className={logInFormStyle.iconTextFieldStyle}
-              />
-            }
-          ></CNTextField>
-
-          <CNTextField
-            type='smallBorderRadius'
-            placeholder='Enter usename or email'
-            className={logInFormStyle.textFieldStyle}
-            endAdornment={
-              <SVGIcon
-                name='user'
-                width='15px'
-                height='15px'
-                fill='#006c70'
-                className={logInFormStyle.iconTextFieldStyle}
-              />
-            }
-          ></CNTextField>
-          <CNTextField
-            type='smallBorderRadius'
-            placeholder='Enter password'
-            className={logInFormStyle.textFieldStyle}
-            endAdornment={
-              <SVGIcon
-                name='password'
-                width='15px'
-                height='15px'
-                fill='#006c70'
+                name="password"
+                width="15px"
+                height="15px"
+                fill="#006c70"
                 className={logInFormStyle.iconTextFieldStyle}
               />
             }
@@ -380,17 +351,17 @@ export const LoginForm = ({
                 Keep me signed in
               </span>
             </CheckboxForm>
-            <a href='#'>Lost Your Password?</a>
+            <a href="#">Lost Your Password?</a>
           </UnderTextField>
 
-          <CNButton type='main' className={logInFormStyle.buttonLogInStyle}>
+          <CNButton type="main" className={logInFormStyle.buttonLogInStyle}>
             Login
           </CNButton>
 
           <UnderButton>
             Don't you have an account?
             <a
-              href='#'
+              href="#"
               onClick={(e) => {
                 e.preventDefault();
                 setSelectedHomeModal('register');
