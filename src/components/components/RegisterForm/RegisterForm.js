@@ -1,9 +1,11 @@
-import { CNTextField } from '@Components/shared/CNTextField/CNTextField';
 import { CNSelect } from '@Components/shared/CNSelect/CNSelect';
+import { CNTextField } from '@Components/shared/CNTextField/CNTextField';
 import { SVGIcon } from '@Components/shared/SvgIcon/Icon';
 import useIsMobile from '@Core/hooks/useIsMobile';
 import { makeStyles } from '@material-ui/core';
 import React from 'react';
+import { useForm } from 'react-hook-form';
+import { components } from 'react-select';
 import styled, { keyframes } from 'styled-components';
 import { CNButton } from '../../shared/CNButton/CNButton';
 
@@ -30,16 +32,6 @@ const useRegisterStyle = makeStyles((theme) => ({
     fontSize: '16px',
     fontWeight: '700',
     textTransform: 'none',
-  },
-  selectStyle: {
-    border: '1px solid #ccc',
-    height: '50px',
-    '&:last-child': {
-      border: 'none',
-      fontSize: '14px',
-      lineHeight: '1.75',
-      color: '#484848',
-    },
   },
 }));
 
@@ -137,11 +129,32 @@ const SmallText = styled.small`
 function RegisterForm({ setSelectedHomeModal, setShowModal, showModal }) {
   const { isMobile } = useIsMobile();
   const RegisterStyle = useRegisterStyle();
+
+  //custom select
+  const DropdownIndicator = (props) => {
+    return (
+      components.DropdownIndicator && (
+        <components.DropdownIndicator {...props}>
+          <SVGIcon name="userGroup" width="20px" />
+        </components.DropdownIndicator>
+      )
+    );
+  };
   const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' },
+    { value: 'selectRole', label: 'Select Role' },
+    { value: 'user', label: 'User' },
+    { value: 'agent', label: 'Agent' },
+    { value: 'agency', label: 'Agency' },
   ];
+
+  const form = useForm({
+    defaultValues: {
+      userName: '',
+      email: '',
+      password: '',
+      // retypePassword: '',
+    },
+  });
 
   return (
     <FormRegister isMobile={isMobile}>
@@ -151,7 +164,7 @@ function RegisterForm({ setSelectedHomeModal, setShowModal, showModal }) {
           src={
             'https://g5p6r6b9.stackpathcdn.com/homeo/wp-content/uploads/2020/02/bg-register.jpg'
           }
-          alt='room'
+          alt="room"
         />
       </FormLeft>
       <FormContent>
@@ -159,73 +172,84 @@ function RegisterForm({ setSelectedHomeModal, setShowModal, showModal }) {
           <ContentTitle>Register</ContentTitle>
           <FormClose>
             <SVGIcon
-              name='close'
-              width='10px'
-              height='10px'
-              fill='#006c70'
+              name="close"
+              width="10px"
+              height="10px"
+              fill="#006c70"
               onClick={() => setShowModal((prev) => !prev)}
             />
           </FormClose>
         </ContentHeader>
-        <CNTextField
-          name='userName'
-          type='smallBorderRadius'
-          placeholder='User name'
-          className={RegisterStyle.textFieldStyle}
-          endAdornment={<SVGIcon name='user' width='21px' height='21px' />}
-          fullWidth
-        ></CNTextField>
-        <CNTextField
-          name='email'
-          type='smallBorderRadius'
-          placeholder='Email'
-          className={RegisterStyle.textFieldStyle}
-          fullWidth
-          endAdornment={<SVGIcon name='user' width='21px' height='21px' />}
-        ></CNTextField>
-        <CNTextField
-          name='password'
-          type='smallBorderRadius'
-          placeholder='Password'
-          className={RegisterStyle.textFieldStyle}
-          fullWidth
-          endAdornment={<SVGIcon name='password' width='21px' height='21px' />}
-        ></CNTextField>
-        <CNTextField
-          name='retypePassword'
-          type='smallBorderRadius'
-          placeholder='Re-enter Password'
-          fullWidth
-          className={RegisterStyle.textFieldStyle}
-          endAdornment={<SVGIcon name='password' width='21px' height='21px' />}
-        ></CNTextField>
-        <CNSelect
-          options={options}
-          placeholder='Select Role'
-          isClearable={false}
-          components={{ Option: DropdownIndicator }}
-          className={RegisterStyle.selectStyle}
-        ></CNSelect>
-        <CNButton
-          name='registerSubmit'
-          type='main'
-          fullWidth
-          className={RegisterStyle.buttonStyle}
-        >
-          Register
-        </CNButton>
-        <SmallText>
-          Already have an account?{' '}
-          <a
-            href='#'
-            onClick={(e) => {
-              e.preventDefault();
-              setSelectedHomeModal('login');
-            }}
+        <form onSubmit={form.handleSubmit(handleSubmit)}>
+          <CNTextField
+            name="userName"
+            type="text"
+            form={form}
+            placeholder="User name"
+            className={RegisterStyle.textFieldStyle}
+            endAdornment={<SVGIcon name="user" width="21px" height="21px" />}
+            fullWidth
+          ></CNTextField>
+          <CNTextField
+            name="email"
+            type="email"
+            placeholder="Email"
+            form={form}
+            className={RegisterStyle.textFieldStyle}
+            fullWidth
+            endAdornment={<SVGIcon name="user" width="21px" height="21px" />}
+          ></CNTextField>
+          <CNTextField
+            name="password"
+            type="password"
+            placeholder="Password"
+            form={form}
+            className={RegisterStyle.textFieldStyle}
+            fullWidth
+            endAdornment={
+              <SVGIcon name="password" width="21px" height="21px" />
+            }
+          ></CNTextField>
+          <CNTextField
+            name="retypePassword"
+            type="password"
+            placeholder="Re-enter Password"
+            form={form}
+            fullWidth
+            className={RegisterStyle.textFieldStyle}
+            endAdornment={
+              <SVGIcon name="password" width="21px" height="21px" />
+            }
+          ></CNTextField>
+          <CNSelect
+            options={options}
+            placeholder="Select Role"
+            isClearable={false}
+            width={'100%'}
+            customComponents={{ DropdownIndicator }}
+            // className={RegisterStyle.selectStyle}
+          ></CNSelect>
+          <CNButton
+            name="registerSubmit"
+            type="main"
+            fullWidth
+            className={RegisterStyle.buttonStyle}
           >
-            Login
-          </a>
-        </SmallText>
+            Register
+          </CNButton>
+          <SmallText>
+            Already have an account?{' '}
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                setSelectedHomeModal('login');
+              }}
+            >
+              Login
+            </a>
+          </SmallText>
+        </form>
       </FormContent>
     </FormRegister>
   );
