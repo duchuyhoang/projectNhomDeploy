@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { SVGIcon } from "@Components/shared/SvgIcon/Icon";
 import { CNAvatar } from "@Components/shared/CNAvatar/CNAvatar";
-import {DropDownUserInfo} from "./DropDownUserInfo";
+import { DropDownUserInfo } from "./DropDownUserInfo";
 
 const BaseText = styled.div`
 color:${props => props.theme.palette.text.secondary};
@@ -14,7 +14,7 @@ cursor:pointer;
 
 `
 
-const DropDownUser=styled.div`
+const DropDownUser = styled.div`
 visibility:hidden;
 position:absolute;
 top:100%;
@@ -49,9 +49,6 @@ position:relative;
     transform:rotateX(0deg);
     visibility:visible;
 }
-&:hover{
-    color:${props => (props.theme.palette.primary.main)};
-}
 `;
 const RegisterText = styled.div`
 display:inline-block;
@@ -63,7 +60,7 @@ align-items:center;
 
 `;
 
-const UserName=styled.p`
+const UserName = styled.p`
 display:flex;
 align-items:center;
 white-space:nowrap;
@@ -73,22 +70,23 @@ overflow:hidden;
 
 export const UserInfo = ({ setSelectedHomeModal, setHomeModalOpen }) => {
     const userInfo = useAuth();
+    console.log(userInfo);
     return (
         <Container>
             {userInfo.isLogin ? (
-            
-            <>
-            <CNAvatar type="small" src={userInfo.avatar} />
-            
-            <UserName style={{marginLeft:10}}>{userInfo.lastName}  {userInfo.middleName}   {userInfo.firstName}</UserName>
-<DropDownUser>
-    <div style={{overflow:"hidden"}}>
-        <DropDownUserInfo signOutHandle={userInfo.signOut}/>
-    </div>
 
-</DropDownUser>
-            </>
-            )  : (
+                <>
+                    <CNAvatar type="small" src={userInfo.avatar} />
+
+                    <UserName style={{ marginLeft: 10 }}>{userInfo.name}</UserName>
+                    <DropDownUser>
+                        <div style={{ overflow: "hidden" }}>
+                            <DropDownUserInfo signOutHandle={userInfo.signOut} />
+                        </div>
+
+                    </DropDownUser>
+                </>
+            ) : (
                 <>
                     <SVGIcon name="user" width="25" height="25" style={{ fill: "#fff", margin: "0 5px" }} />
                     <RegisterText

@@ -9,15 +9,16 @@ import { UserInfo } from './UserInfo';
 import './NavBar.css';
 
 const NavBarContainer = styled.section`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  background-color: transparent;
-  align-items: center;
-  position: fixed;
-  border-bottom: 1px solid
-    ${(props) => {
-      return props.isSmallVer ? props.theme.border.main : 'transparent';
+display:flex;
+width:100%;
+justify-content:space-between;
+background-color:transparent;
+align-items:center;
+position:absolute;
+top:0;
+border-bottom:1px solid ${props => {
+        return props.isSmallVer ? props.theme.border.main : "transparent"
+
     }};
   padding: 15px 0px;
   z-index: 1000;
@@ -317,13 +318,12 @@ export const NavBar = (props) => {
 
   return (
     <>
-      {!mediaScreenTrue ? (
-        <>
-          {!mediaScreenTrue ? (
+     {!mediaScreenTrue ? (
             <>
               <SmallScreenNavBar data={mockData}></SmallScreenNavBar>
             </>
           ) : (
+            <>
             <NavBarContainer isSmall={mediaScreenTrue}>
               <Logo>
                 <SVGIcon name='logo' width='200' height='60' />
@@ -414,133 +414,16 @@ export const NavBar = (props) => {
                 </ModifiedButton>
               </ListContainer>
             </NavBarContainer>
-          )}
 
-          <HomeModal
+            <HomeModal
             selectedModal={selectedHomeModal}
             showModal={homeModalOpen}
             setShowModal={setHomeModalOpen}
             setSelectedHomeModal={setSelectedHomeModal}
           />
         </>
-      ) : (
-        <NavBarContainer isSmall={mediaScreenTrue}>
-          <Logo>
-            <SVGIcon name='logo' width='200' height='60' />
-          </Logo>
-
-          <ListContainer>
-            <RootItem
-              active={currentTab === 'home'}
-              onClick={handleOver('home')}
-              onMouseOver={handleOver(0)}
-            >
-              Home
-              <ArrowDown
-                name='arrowDown'
-                width='10'
-                height='10'
-                style={{ marginTop: 3, marginLeft: 5 }}
-              />
-              <DropDown className={selectedTab == 0 ? 'active' : ''}>
-                <RecursiveNav data={mockData['properties']} index={0} />
-              </DropDown>
-            </RootItem>
-            <RootItem
-              active={currentTab === 'properties'}
-              onMouseOver={handleOver('properties')}
-              onMouseLeave={handleMouseOut}
-            >
-              Properties
-              <ArrowDown
-                name='arrowDown'
-                width='10'
-                height='10'
-                style={{ marginTop: 3, marginLeft: 5 }}
-              />
-              <DropDown className={selectedTab == 0 ? 'active' : ''}>
-                <RecursiveNav data={mockData['properties']} index={0} />
-              </DropDown>
-            </RootItem>
-            <RootItem
-              active={currentTab === 'members'}
-              onMouseOver={handleOver('members')}
-              onMouseLeave={handleMouseOut}
-            >
-              Members
-              <ArrowDown
-                name='arrowDown'
-                width='10'
-                height='10'
-                style={{ marginTop: 3, marginLeft: 5 }}
-              />
-            </RootItem>
-            <RootItem
-              active={currentTab === 'pages'}
-              onClick={handleOver('pages')}
-            >
-              Pages
-              <ArrowDown
-                name='arrowDown'
-                width='10'
-                height='10'
-                style={{ marginTop: 3, marginLeft: 5 }}
-              />
-            </RootItem>
-
-            <RootItem
-              active={currentTab === 'contact'}
-              onClick={handleOver('contact')}
-            >
-              Contact
-            </RootItem>
-
-            <SVGIcon
-              name='user'
-              width='25'
-              height='25'
-              style={{ fill: '#fff', margin: '0 5px' }}
-            />
-            <RegisterTextContainer style={{ marginRight: 20, color: '#fff' }}>
-              <RegisterText
-                onClick={(e) => {
-                  setSelectedHomeModal('login');
-                  setHomeModalOpen(true);
-                }}
-              >
-                Login
-              </RegisterText>
-              /
-              <RegisterText
-                onClick={() => {
-                  setSelectedHomeModal('register');
-                  setHomeModalOpen(true);
-                }}
-              >
-                Register
-              </RegisterText>
-            </RegisterTextContainer>
-
-            <ModifiedButton
-              startIcon={
-                <SVGIcon
-                  name='plus'
-                  style={{ fill: 'currentColor', maxWidth: '100%' }}
-                />
-              }
-            >
-              Submit Property
-            </ModifiedButton>
-          </ListContainer>
-        </NavBarContainer>
-      )}
-
-      <HomeModal
-        selectedModal={selectedHomeModal}
-        showModal={homeModalOpen}
-        setShowModal={setHomeModalOpen}
-        setSelectedHomeModal={setSelectedHomeModal}
-      />
-    </>
+          )
+          }
+          </>
   );
 };

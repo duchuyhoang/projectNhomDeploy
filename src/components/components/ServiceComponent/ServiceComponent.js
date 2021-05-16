@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 import styled, { css } from 'styled-components'
 import { makeStyles } from "@material-ui/core"
 import { CNCard } from '@Components/shared/CNCard/CNCard'
@@ -108,10 +108,34 @@ const CardInfo = styled.p`
 font-size:14px;
 color: ${props => props.theme.palette.text.primary};
 `
-export const ServiceComponent = ({ cardList }) => {
+export const ServiceComponent = (props) => {
     const { isMobile } = useIsMobile();
     const serviceComponentStyles = useServiceComponentStyles();
 
+    const [cardList, setCardList] = useState([{
+        SVGIcon: "highFive",
+        title: "Trusted By Thousands",
+        description: "Aliquam dictum elit vitae mauris facilisis at dictum vitae mauris  urna dignissim donec vel lectus vel felis."
+    },
+    {
+        SVGIcon: "home",
+        title: "Wide Renge Of Properties",
+        description: "Aliquam dictum elit vitae mauris facilisis at dictum vitae mauris  urna dignissim donec vel lectus vel felis."
+    },
+    {
+        SVGIcon: "profitcalculator",
+        title: "Financing Made Easy",
+        description: "Aliquam dictum elit vitae mauris facilisis at dictum vitae mauris  urna dignissim donec vel lectus vel felis."
+    }, {
+        SVGIcon: "home",
+        title: "Wide Renge Of Properties",
+        description: "Aliquam dictum elit vitae mauris facilisis at dictum vitae mauris  urna dignissim donec vel lectus vel felis."
+    },
+    {
+        SVGIcon: "profitcalculator",
+        title: "Financing Made Easy",
+        description: "Aliquam dictum elit vitae mauris facilisis at dictum vitae mauris  urna dignissim donec vel lectus vel felis."
+    }])
 
     return (
         <Background>

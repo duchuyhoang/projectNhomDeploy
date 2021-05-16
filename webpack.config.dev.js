@@ -5,8 +5,9 @@ module.exports = {
     mode: "development",
     entry: path.join(__dirname, "/src/index.js"),
     output: {
-        path: path.join(__dirname, "/src"),
+        path: path.join(__dirname, "/build"),
         filename: "bundle.js",
+        publicPath: "/build",
         clean:true
     },
     resolve:{
@@ -49,6 +50,9 @@ devServer:{
                 use: [
                     {
                     loader: 'file-loader',
+                    options: {
+                        name: '[path][name].[hash].[ext]',
+                      },
                 }
                 ,]
             },
