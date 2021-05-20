@@ -7,7 +7,6 @@ import { createSelector } from "reselect"
 const userLogin = createAsyncThunk("auth/login", async (payload, { rejectWithValue, dispatch }) => {
     try {
         const { email, password } = payload;
-
         const response = await axiosApi.post("/login", {
             email,
             password
@@ -62,10 +61,10 @@ const selectIsLogin = createSelector(
         if (accessToken) {
             const parsedToken = parseJwt(accessToken)
             const now = Date.now()
-            return { isLogin: parsedToken.exp * 1000 > now ? true : false }
+            return parsedToken.exp * 1000 > now ? true : false
         }
         else
-            return { isLogin: false }
+            return  false 
     })
 
 

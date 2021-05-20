@@ -9,6 +9,7 @@ const getCurrentUser = createAsyncThunk("user/current", async (payload, { reject
     if (id !== null) {
         try {
             const response = await axiosApi.get(`/current_user/${id}`);
+            console.log("response",response.data);
             return response.data
         }
         catch (err) {

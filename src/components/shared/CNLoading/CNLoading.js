@@ -1,7 +1,7 @@
 import React from "react";
 import "./CNLoading.css";
 
-export const Loading = () =>{
+export const CNLoading = () =>{
     return (
         <div className="loading-screen">
             <div className="loading">

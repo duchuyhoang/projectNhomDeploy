@@ -8,25 +8,28 @@ import {
 } from "react-router-dom";
 const Message = lazy(() => import("@Components/Message"));
 import { NavBar } from "@Components/components/NavBar/NavBar";
-import styled from 'styled-components'
+const Home=lazy(() => import("@Components/pages/Home"))
+const Property=lazy(()=>import("@Components/pages/Property"))
+// import  Home  from;
+import {CNLoading} from "@Components/shared/CNLoading/CNLoading";
 
-const Content = styled.section`
-padding-top:150px;
-`
 
 export const App = ({ title }) => {
     return (
         <>
-            
-            
-                <Router>
+
+            <Router>
                 <NavBar currentTab={"properties"}></NavBar>
-                <Content>
-                    <Suspense fallback={<div>Loading...</div>}>
+                    <Suspense fallback={<CNLoading />}>
                         <Switch>
-                            <Route path="/home">
+                            <Route path="/test">
                                 <Message />
                             </Route>
+
+                            <Route path="/home" component={Home} />
+                            
+                            <Route path="/property" component={Property} />
+                               
                             <Route path="/users">
                             </Route>
                             <Route path="/">
@@ -35,11 +38,11 @@ export const App = ({ title }) => {
                                 }} />
                             </Route>
                         </Switch>
-                        
+
                     </Suspense>
-                    </Content>
-                </Router>
-            
+                {/* </Content> */}
+            </Router>
+
         </>
     )
 }
