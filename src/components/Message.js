@@ -8,6 +8,7 @@ import { SVGIcon } from '@Components/shared/SvgIcon/Icon';
 import { CooperateForm } from './components/CooperateForm/CooperateForm';
 import { CNSelect } from '@Components/shared/CNSelect/CNSelect';
 import { components } from 'react-select';
+import CNStar from './shared/CNStar/CNStar';
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -35,30 +36,58 @@ const DropdownIndicator = (props) => {
 };
 
 const Message = ({ message }) => {
-const dispatch=useDispatch()
-   
-    return (
-        <>
-            {/* <CooperateForm></CooperateForm> */}
-            {/* <CNSelect customComponents={{DropdownIndicator}}/> */}
-            {/* <Stretcher>
-
-            </Stretcher> */}
-            {/* <Footer>
-
-            </Footer> */}
-            <button style={{marginTop:300}} onClick={() => {
-                dispatch(authActions.userLogin({
-                    email: "huyhoang10032000@gmail.com",
-                    password: "12345"
-                }))
-
-            }}>Login</button>
-
-        </>
-    )
-
-}
-
-export default Message
-
+  const [cardList, setCardList] = useState([
+    {
+      SVGIcon: 'highFive',
+      title: 'Trusted By Thousands',
+      description:
+        'Aliquam dictum elit vitae mauris facilisis at dictum vitae mauris  urna dignissim donec vel lectus vel felis.',
+    },
+    {
+      SVGIcon: 'home',
+      title: 'Wide Renge Of Properties',
+      description:
+        'Aliquam dictum elit vitae mauris facilisis at dictum vitae mauris  urna dignissim donec vel lectus vel felis.',
+    },
+    {
+      SVGIcon: 'profitcalculator',
+      title: 'Financing Made Easy',
+      description:
+        'Aliquam dictum elit vitae mauris facilisis at dictum vitae mauris  urna dignissim donec vel lectus vel felis.',
+    },
+    {
+      SVGIcon: 'home',
+      title: 'Wide Renge Of Properties',
+      description:
+        'Aliquam dictum elit vitae mauris facilisis at dictum vitae mauris  urna dignissim donec vel lectus vel felis.',
+    },
+    {
+      SVGIcon: 'profitcalculator',
+      title: 'Financing Made Easy',
+      description:
+        'Aliquam dictum elit vitae mauris facilisis at dictum vitae mauris  urna dignissim donec vel lectus vel felis.',
+    },
+  ]);
+  return (
+    <>
+      <CooperateForm></CooperateForm>
+      <CNSelect customComponents={{ DropdownIndicator }} />
+      <CNStar values="2.5" size="medium" />
+      <Stretcher></Stretcher>
+      <Footer></Footer>
+      {/* {isHomeModalShow && <HomeModal showModal={isHomeModalShow} setShowModal={setIsHomeModalShow} />} */}
+      <button
+        onClick={() => {
+          dispatch(
+            authActions.userLogin({
+              email: 'huyhoang10032000@gmail.com',
+              password: '12345',
+            })
+          );
+        }}
+      >
+        Login
+      </button>
+    </>
+  );
+};
