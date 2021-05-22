@@ -1,12 +1,13 @@
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useRef, useEffect, useCallback, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { CNButton } from '@Components/shared/CNButton/CNButton';
 import useIsMobile from '@Core/hooks/useIsMobile';
-import { makeStyles } from '@material-ui/core';
+import { FormControl, FormHelperText, makeStyles } from '@material-ui/core';
 import { SVGIcon } from '@Components/shared/SvgIcon/Icon';
 import { CNTextField } from '@Components/shared/CNTextField/CNTextField';
 import { CNCheckBox } from '@Components/shared/CNCheckBox/CNCheckBox';
 import { uuid } from '@Ultis/uuid';
+import { Controller, useForm } from 'react-hook-form';
 
 const useLogInFormStyle = makeStyles((theme) => ({
   root: {
@@ -128,7 +129,6 @@ const LogInForm = styled.div`
   color: #000;
   display: flex;
   justify-content: space-evenly;
-  position: relative;
   z-index: 2002;
   border-radius: 10px;
   box-sizing: border-box;
@@ -152,30 +152,27 @@ const ModalImg = styled.img`
 `;
 // Right-Form-LogIn
 const ModalContent = styled.div`
-  ${AlignCenter};
-  justify-content: space-evenly;
-  flex-direction: column;
-  line-height: 1.8;
-  color: #141414;
+  /* display: flex;
+  align-items: center;
+  flex-direction: column; */
+  /* line-height: 1.8; */
+  /* color: #141414; */
   width: 100%;
-  padding: 12px 0 38px 0;
-  min-width: 406px;
+  padding: 15px;
+  padding-top: 10px;
 `;
 
 //Header
 const HeaderLogIn = styled.div`
   display: flex;
-  justify-content: space-around;
-  margin-bottom: -24px;
+  align-items: center;
+  justify-content: space-between;
+  flex-grow: 1;
 `;
-const HeaderLogInClose = styled.a`
-  margin: 0 0 10px 146px;
-  right: 0;
-`;
+const HeaderLogInClose = styled.a``;
 const HeaderLogInText = styled.h2`
   color: #006c70;
   font-size: 18px;
-  margin-left: 150px;
 `;
 // Line Cross Text "Or"
 const LineHeaderLogIn = styled.div`
@@ -263,7 +260,7 @@ export const LoginForm = ({
     return () => document.removeEventListener('keydown', keyPress);
   }, [keyPress]);
 
-  const [checkBoxState, setCheckBoxState] = React.useState([
+  const [checkBoxState, setCheckBoxState] = useState([
     {
       label: 'Keep me signed in',
       value: 'Keep me signed in',
@@ -271,6 +268,18 @@ export const LoginForm = ({
       isChecked: false,
     },
   ]);
+
+  const { control, formState, handleSubmit } = useForm({
+    defaultValue: {
+      email: '',
+      password: '',
+      keepLogin: false,
+    },
+  });
+
+  const handleLoginSubmit = (values) => {
+    console.log(values);
+  };
 
   return (
     <>
@@ -284,79 +293,117 @@ export const LoginForm = ({
         </FormLeft>
 
         <ModalContent>
-          <HeaderLogIn>
-            <HeaderLogInText>Login</HeaderLogInText>
-            <HeaderLogInClose href="#">
+          <form onSubmit={handleSubmit(handleLoginSubmit)}>
+            <HeaderLogIn>
+              <HeaderLogInText>Login</HeaderLogInText>
+              <HeaderLogInClose href="#">
+                <SVGIcon
+                  name="close"
+                  width="10px"
+                  height="10px"
+                  fill="#006c70"
+                  onClick={() => setShowModal((prev) => !prev)}
+                />
+              </HeaderLogInClose>
+            </HeaderLogIn>
+            <CNButton className={logInFormStyle.FbBtnStyle}>
               <SVGIcon
-                name="close"
-                width="10px"
-                height="10px"
-                fill="#006c70"
-                onClick={() => setShowModal((prev) => !prev)}
+                name="facebook"
+                width="15px"
+                height="15px"
+                fill="#506dab"
+                className={logInFormStyle.IconFbStyle}
               />
-            </HeaderLogInClose>
-          </HeaderLogIn>
-          <CNButton className={logInFormStyle.FbBtnStyle}>
-            <SVGIcon
-              name="facebook"
-              width="15px"
-              height="15px"
-              fill="#506dab"
-              className={logInFormStyle.IconFbStyle}
+              Login with Facebook
+            </CNButton>
+            <Controller
+              name="userName"
+              control={control}
+              render={({ field: { onChange } }) => (
+                <FormControl fullWidth>
+                  <CNTextField
+                    smallBorderRadius
+                    type="text"
+                    placeholder="Enter usename or email"
+                    className={logInFormStyle.textFieldStyle}
+                    inputChange={onChange}
+                    fullWidth
+                    endAdornment={
+                      <SVGIcon
+                        name="user"
+                        width="15px"
+                        height="15px"
+                        fill="#006c70"
+                        className={logInFormStyle.iconTextFieldStyle}
+                      />
+                    }
+                  ></CNTextField>
+                  <FormHelperText>
+                    {formState.errors['email']?.message}
+                  </FormHelperText>
+                </FormControl>
+              )}
             />
-            Login with Facebook
-          </CNButton>
+            <Controller
+              name="password"
+              control={control}
+              render={({ field: { onChange } }) => (
+                <FormControl fullWidth>
+                  <CNTextField
+                    smallBorderRadius
+                    type="password"
+                    placeholder="Enter password"
+                    inputChange={onChange}
+                    className={logInFormStyle.textFieldStyle}
+                    fullWidth
+                    endAdornment={
+                      <SVGIcon
+                        name="password"
+                        width="15px"
+                        height="15px"
+                        fill="#006c70"
+                        className={logInFormStyle.iconTextFieldStyle}
+                      />
+                    }
+                  ></CNTextField>
+                  <FormHelperText>
+                    {formState.errors['password']?.message}
+                  </FormHelperText>
+                </FormControl>
+              )}
+            />
 
-          <CNTextField
-            type="smallBorderRadius"
-            placeholder="Enter usename or email"
-            className={logInFormStyle.textFieldStyle}
-            endAdornment={
-              <SVGIcon
-                name="user"
-                width="15px"
-                height="15px"
-                fill="#006c70"
-                className={logInFormStyle.iconTextFieldStyle}
-              />
-            }
-          ></CNTextField>
-          <CNTextField
-            type="password"
-            placeholder="Enter password"
-            className={logInFormStyle.textFieldStyle}
-            endAdornment={
-              <SVGIcon
-                name="password"
-                width="15px"
-                height="15px"
-                fill="#006c70"
-                className={logInFormStyle.iconTextFieldStyle}
-              />
-            }
-          ></CNTextField>
+            <UnderTextField>
+              <CheckboxForm>
+                <Controller
+                  name="keepLogin"
+                  control={control}
+                  render={({ field: { onChange } }) => (
+                    <FormControl>
+                      <CNCheckBox
+                        label={checkBoxState.label}
+                        data={checkBoxState}
+                        checkBoxState={checkBoxState}
+                        setCheckBoxState={setCheckBoxState}
+                        key={checkBoxState.id}
+                        value={checkBoxState.value}
+                        className={logInFormStyle.checkBoxStyle}
+                        onChange={onChange}
+                      ></CNCheckBox>
+                      <span className={logInFormStyle.textCheckBox}>
+                        Keep me signed in
+                      </span>
+                    </FormControl>
+                  )}
+                />
+              </CheckboxForm>
+              <a href="#">Lost Your Password?</a>
+            </UnderTextField>
 
-          <UnderTextField>
-            <CheckboxForm>
-              <CNCheckBox
-                label={checkBoxState.label}
-                data={checkBoxState}
-                checkBoxState={checkBoxState}
-                setCheckBoxState={setCheckBoxState}
-                key={checkBoxState.id}
-                value={checkBoxState.value}
-                className={logInFormStyle.checkBoxStyle}
-              ></CNCheckBox>
-              <span className={logInFormStyle.textCheckBox}>
-                Keep me signed in
-              </span>
-            </CheckboxForm>
-            <a href="#">Lost Your Password?</a>
-          </UnderTextField>
-
-          <CNButton type="main" className={logInFormStyle.buttonLogInStyle}>
-            Login
-          </CNButton>
+            <CNButton type="submit" className={logInFormStyle.buttonLogInStyle}>
+              Login
+            </CNButton>
+          </form>
 
           <UnderButton>
             Don't you have an account?
