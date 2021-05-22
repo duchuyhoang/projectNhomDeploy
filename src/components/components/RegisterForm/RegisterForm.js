@@ -231,7 +231,7 @@ function RegisterForm({ setSelectedHomeModal, setShowModal, showModal }) {
         >
           <Controller
             control={control}
-            name="email"
+            name="userName"
             render={({ field: { onChange } }) => (
               <FormControl fullWidth>
                 <CNTextField

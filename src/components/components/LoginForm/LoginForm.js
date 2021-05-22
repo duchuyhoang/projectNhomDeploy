@@ -8,6 +8,8 @@ import { CNTextField } from '@Components/shared/CNTextField/CNTextField';
 import { CNCheckBox } from '@Components/shared/CNCheckBox/CNCheckBox';
 import { uuid } from '@Ultis/uuid';
 import { Controller, useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const useLogInFormStyle = makeStyles((theme) => ({
   root: {
@@ -21,7 +23,7 @@ const useLogInFormStyle = makeStyles((theme) => ({
   FbBtnStyle: {
     display: 'flex',
     justifyContent: 'start',
-    margin: '12px 0 0 0',
+    margin: '0',
     backgroundColor: '#fff',
     border: '1px solid #506dab',
     color: '#506dab',
@@ -50,7 +52,7 @@ const useLogInFormStyle = makeStyles((theme) => ({
   },
 
   textCheckBox: {
-    margin: '12px 20px 0 0',
+    // margin: '12px 20px 0 0',
     fontSize: '15px',
     lineHeight: '1.6',
   },
@@ -58,7 +60,6 @@ const useLogInFormStyle = makeStyles((theme) => ({
   checkBoxStyle: {
     height: '20px',
     width: '20px',
-    marginLeft: '10px',
     '&>span>span>svg': {
       height: '20px',
       width: '20px',
@@ -71,11 +72,29 @@ const useLogInFormStyle = makeStyles((theme) => ({
     fontWeight: '700',
     width: '340px',
     textTransform: 'none',
+    margin: '0',
   },
 
   iconTextFieldStyle: {
     height: '28px',
     width: '28px',
+  },
+  formStyle: {
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: '70%',
+    marginTop: '40px',
+  },
+  helperTextStyles: {
+    color: 'red',
+    position: 'absolute',
+    bottom: '-18px',
+  },
+  formControlCheckBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 }));
 
@@ -152,14 +171,10 @@ const ModalImg = styled.img`
 `;
 // Right-Form-LogIn
 const ModalContent = styled.div`
-  /* display: flex;
-  align-items: center;
-  flex-direction: column; */
-  /* line-height: 1.8; */
-  /* color: #141414; */
+  color: #141414;
   width: 100%;
-  padding: 15px;
-  padding-top: 10px;
+  padding: 30px;
+  padding-top: 20px;
 `;
 
 //Header
@@ -179,36 +194,37 @@ const LineHeaderLogIn = styled.div`
   width: 100%;
   position: relative;
   text-align: center;
-
   > * {
     &:first-child {
-      position: relative;
+      position: absolute;
+
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       padding: 0 5px;
       background-color: #fff;
       text-transform: capitalize;
       color: #006c70;
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 700;
     }
   }
   &:before {
     content: '';
     position: absolute;
     top: 50%;
-    width: 340px;
+    left: 0;
+    width: 100%;
     height: 1px;
     background-color: #ebebeb;
-    ${AlignCenter};
-    margin-left: 24px;
+    /*  */
   }
 `;
 //Checkbox, forgot password
 const UnderTextField = styled.div`
   width: 100%;
   display: flex;
-  justify-content: space-around;
-  margin: 0 0 10px 0;
-  padding-bottom: 10px;
+  justify-content: space-between;
 
   > * {
     &:last-child {
@@ -217,15 +233,18 @@ const UnderTextField = styled.div`
       font-size: 15px;
       font-weight: 500;
       line-height: 1.75;
-      margin-right: 15px;
     }
   }
 `;
-const CheckboxForm = styled.div``;
+const CheckboxForm = styled.div`
+  padding: 0;
+`;
 
 // Text and <a>
 const UnderButton = styled.div`
   font-size: 15px;
+  text-align: center;
+  margin-top: 15px;
   > * {
     &:last-child {
       text-decoration: none;
@@ -269,13 +288,33 @@ export const LoginForm = ({
     },
   ]);
 
+  //visible password
+  const [showPassword, setShowPassword] = useState(false);
+  const toggleShowPassword = () => {
+    setShowPassword((x) => !x);
+  };
+
+  //validate form
+  const schema = yup.object().shape({
+    email: yup
+      .string()
+      .required('Please enter your email')
+      .email('Email is not valid'),
+    password: yup.string().required('Please enter your password'),
+    keepLogin: yup
+      .boolean()
+      .test('keep', 'Please keep login!', (value) => value),
+  });
+
   const { control, formState, handleSubmit } = useForm({
     defaultValue: {
       email: '',
       password: '',
       keepLogin: false,
     },
+    resolver: yupResolver(schema),
   });
+  console.log('Error:', formState.errors);
 
   const handleLoginSubmit = (values) => {
     console.log(values);
@@ -293,19 +332,22 @@ export const LoginForm = ({
         </FormLeft>
 
         <ModalContent>
-          <form onSubmit={handleSubmit(handleLoginSubmit)}>
-            <HeaderLogIn>
-              <HeaderLogInText>Login</HeaderLogInText>
-              <HeaderLogInClose href="#">
-                <SVGIcon
-                  name="close"
-                  width="10px"
-                  height="10px"
-                  fill="#006c70"
-                  onClick={() => setShowModal((prev) => !prev)}
-                />
-              </HeaderLogInClose>
-            </HeaderLogIn>
+          <HeaderLogIn>
+            <HeaderLogInText>Login</HeaderLogInText>
+            <HeaderLogInClose href="#">
+              <SVGIcon
+                name="close"
+                width="10px"
+                height="10px"
+                fill="#006c70"
+                onClick={() => setShowModal((prev) => !prev)}
+              />
+            </HeaderLogInClose>
+          </HeaderLogIn>
+          <form
+            onSubmit={handleSubmit(handleLoginSubmit)}
+            className={logInFormStyle.formStyle}
+          >
             <CNButton className={logInFormStyle.FbBtnStyle}>
               <SVGIcon
                 name="facebook"
@@ -316,18 +358,21 @@ export const LoginForm = ({
               />
               Login with Facebook
             </CNButton>
+            <LineHeaderLogIn>
+              <span>Or</span>
+            </LineHeaderLogIn>
             <Controller
-              name="userName"
+              name="email"
               control={control}
               render={({ field: { onChange } }) => (
                 <FormControl fullWidth>
                   <CNTextField
-                    smallBorderRadius
                     type="text"
-                    placeholder="Enter usename or email"
+                    placeholder="Enter your email"
                     className={logInFormStyle.textFieldStyle}
                     inputChange={onChange}
                     fullWidth
+                    error={!!formState.errors['email']}
                     endAdornment={
                       <SVGIcon
                         name="user"
@@ -338,7 +383,7 @@ export const LoginForm = ({
                       />
                     }
                   ></CNTextField>
-                  <FormHelperText>
+                  <FormHelperText className={logInFormStyle.helperTextStyles}>
                     {formState.errors['email']?.message}
                   </FormHelperText>
                 </FormControl>
@@ -350,9 +395,9 @@ export const LoginForm = ({
               render={({ field: { onChange } }) => (
                 <FormControl fullWidth>
                   <CNTextField
-                    smallBorderRadius
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     placeholder="Enter password"
+                    error={!!formState.errors['password']}
                     inputChange={onChange}
                     className={logInFormStyle.textFieldStyle}
                     fullWidth
@@ -362,11 +407,14 @@ export const LoginForm = ({
                         width="15px"
                         height="15px"
                         fill="#006c70"
+                        aria-label="toggle password visibility"
+                        onClick={toggleShowPassword}
+                        style={{ cursor: 'pointer' }}
                         className={logInFormStyle.iconTextFieldStyle}
                       />
                     }
                   ></CNTextField>
-                  <FormHelperText>
+                  <FormHelperText className={logInFormStyle.helperTextStyles}>
                     {formState.errors['password']?.message}
                   </FormHelperText>
                 </FormControl>
@@ -379,17 +427,23 @@ export const LoginForm = ({
                   name="keepLogin"
                   control={control}
                   render={({ field: { onChange } }) => (
-                    <FormControl>
+                    <FormControl className={logInFormStyle.formControlCheckBox}>
                       <CNCheckBox
                         label={checkBoxState.label}
                         data={checkBoxState}
                         checkBoxState={checkBoxState}
                         setCheckBoxState={setCheckBoxState}
                         key={checkBoxState.id}
+                        error={!!formState.errors['keepLogin']}
                         value={checkBoxState.value}
                         className={logInFormStyle.checkBoxStyle}
                         onChange={onChange}
                       ></CNCheckBox>
+                      <FormHelperText
+                        className={logInFormStyle.helperTextStyles}
+                      >
+                        {formState.errors['keepLogin']?.message}
+                      </FormHelperText>
                       <span className={logInFormStyle.textCheckBox}>
                         Keep me signed in
                       </span>
@@ -400,7 +454,12 @@ export const LoginForm = ({
               <a href="#">Lost Your Password?</a>
             </UnderTextField>
 
-            <CNButton type="submit" className={logInFormStyle.buttonLogInStyle}>
+            <CNButton
+              buttonType="main"
+              fullWidth
+              type="submit"
+              className={logInFormStyle.buttonLogInStyle}
+            >
               Login
             </CNButton>
           </form>
