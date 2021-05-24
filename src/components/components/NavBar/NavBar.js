@@ -197,7 +197,7 @@ const RecursiveNav = ({ data, index }) => {
         <SubDropDown>
           {data.map((item, index) => {
             return (
-              <>
+              <div key={index}>
                 {item.type === 'link' ? (
                   <Link>{item.title}</Link>
                 ) : (
@@ -207,7 +207,7 @@ const RecursiveNav = ({ data, index }) => {
                     <RecursiveNav data={item.children} index={index + 1} />
                   </Item>
                 )}
-              </>
+              </div>
             );
           })}
         </SubDropDown>
@@ -218,7 +218,7 @@ const RecursiveNav = ({ data, index }) => {
       <>
         {data.map((item, index) => {
           return (
-            <>
+            <div key={index}>
               {item.type === 'link' ? (
                 <Link>{item.title}</Link>
               ) : (
@@ -228,7 +228,7 @@ const RecursiveNav = ({ data, index }) => {
                   <RecursiveNav data={item.children} index={index + 1} />
                 </Item>
               )}
-            </>
+            </div>
           );
         })}
       </>
@@ -314,7 +314,30 @@ export const NavBar = (props) => {
       },
       { type: 'link', title: 'Link1' },
     ],
+    pages : [
+      {
+        type: 'parent',
+        title: 'Blog',
+        children: [
+          { type: 'link', link: '', title: 'Blog List' },
+          { type: 'link', link: '', title: 'Blog-Grid 1' },
+          { type: 'link', link: '', title: 'Blog-Grid 2' },
+          { type: 'link', link: '', title: 'Blog Detail' },
+        ],
+      },
+      { type: 'link', title: 'Shop' },
+
+    ],
+    contact:[],
   };
+
+  const rootItemData = [
+    {id:"home", content:"Home" },
+    {id:"properties", content:"Properties"},
+    {id:"members", content:"Members" },
+    {id:"pages", content:"Pages" },
+    {id:"contact", content:"Contact" },   
+]
 
   return (
     <>
@@ -330,71 +353,30 @@ export const NavBar = (props) => {
               </Logo>
 
               <ListContainer>
-                <RootItem
-                  active={currentTab === 'home'}
-                  onClick={handleOver('home')}
-                  onMouseOver={handleOver(0)}
-                >
-                  Home
-                  <ArrowDown
-                    name='arrowDown'
-                    width='10'
-                    height='10'
-                    style={{ marginTop: 3, marginLeft: 5 }}
-                  />
-                  <DropDown className={selectedTab == 0 ? 'active' : ''}>
-                    <RecursiveNav data={mockData['properties']} index={0} />
-                  </DropDown>
-                </RootItem>
-                <RootItem
-                  active={currentTab === 'properties'}
-                  onMouseOver={handleOver('properties')}
-                  onMouseLeave={handleMouseOut}
-                >
-                  Properties
-                  <ArrowDown
-                    name='arrowDown'
-                    width='10'
-                    height='10'
-                    style={{ marginTop: 3, marginLeft: 5 }}
-                  />
-                  <DropDown className={selectedTab == 0 ? 'active' : ''}>
-                    <RecursiveNav data={mockData['properties']} index={0} />
-                  </DropDown>
-                </RootItem>
-                <RootItem
-                  active={currentTab === 'members'}
-                  onMouseOver={handleOver('members')}
-                  onMouseLeave={handleMouseOut}
-                >
-                  Members
-                  <ArrowDown
-                    name='arrowDown'
-                    width='10'
-                    height='10'
-                    style={{ marginTop: 3, marginLeft: 5 }}
-                  />
-                </RootItem>
-                <RootItem
-                  active={currentTab === 'pages'}
-                  onClick={handleOver('pages')}
-                >
-                  Pages
-                  <ArrowDown
-                    name='arrowDown'
-                    width='10'
-                    height='10'
-                    style={{ marginTop: 3, marginLeft: 5 }}
-                  />
-                </RootItem>
-
-                <RootItem
-                  active={currentTab === 'contact'}
-                  onClick={handleOver('contact')}
-                >
-                  Contact
-                </RootItem>
-
+                {rootItemData.map((item, index) => {
+                  return(
+                    <RootItem
+                        active={currentTab === item.id}
+                        onClick={handleOver(item.id)}
+                        onMouseOver={handleOver(0)}
+                        key={index}
+                      >
+                        {item.content}
+                        {mockData[item.id].length >0 && <ArrowDown
+                              name='arrowDown'
+                              width='10'
+                              height='10'
+                              style={{ marginTop: 3, marginLeft: 5 }}
+                        />}
+                        {mockData[item.id].length >0 &&                   
+                          <DropDown className={selectedTab == 0 ? 'active' : ''}>
+                            <RecursiveNav data={mockData[item.id]} index={0} />
+                          </DropDown>
+                        }
+                      </RootItem>
+                  )
+                })}
+                
                 <RegisterTextContainer style={{ color: '#fff' }}>
                   <UserInfo
                     setSelectedHomeModal={setSelectedHomeModal}
