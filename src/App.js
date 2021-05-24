@@ -10,7 +10,6 @@ const Message = lazy(() => import("@Components/Message"));
 import { NavBar } from "@Components/components/NavBar/NavBar";
 const Home=lazy(() => import("@Components/pages/Home"))
 const Property=lazy(()=>import("@Components/pages/Property"))
-// import  Home  from;
 import {CNLoading} from "@Components/shared/CNLoading/CNLoading";
 
 

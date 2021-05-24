@@ -9,7 +9,22 @@ const useTextFiledContentStyles = makeStyles((theme) => ({
     width: 300,
     borderRadius: props.largeBorderRadius === true ? 50 : 5,
     padding: '6px 20px 6px 0',
-  }),
+    "& input": {
+      "&:-webkit-autofill": {
+        transition:
+          "background-color 50000s ease-in-out 0s, color 50000s ease-in-out 0s",
+      },
+      "&:-webkit-autofill:focus": {
+        transition:
+          "background-color 50000s ease-in-out 0s, color 50000s ease-in-out 0s",
+      },
+      "&:-webkit-autofill:hover": {
+        transition:
+          "background-color 50000s ease-in-out 0s, color 50000s ease-in-out 0s",
+      }
+    }
+  }
+  ),
   input: (props) => ({
     color: theme.palette.text.primary,
     padding: '6px 20px',
@@ -28,11 +43,12 @@ const useTextFiledContentStyles = makeStyles((theme) => ({
   }),
 }));
 
-export const CNTextField = ({ largeBorderRadius, inputChange, ...rest }) => {
+export const CNTextField = ({ largeBorderRadius, inputChange ,isAutoComplete, ...rest }) => {
   const textFieledStyles = useTextFiledContentStyles({ largeBorderRadius });
   return (
     <Input
       disableUnderline={true}
+      autoComplete={isAutoComplete ? "on" : "new-password"}
       classes={textFieledStyles}
       onChange={inputChange}
       inputProps={{

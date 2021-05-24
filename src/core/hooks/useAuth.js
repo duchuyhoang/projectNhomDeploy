@@ -7,7 +7,6 @@ import {currentUserActions,currentUserSelectors} from "@Core/redux/user";
 export const useAuth=()=>{
 
 const isLogin=useSelector(authSelectors.selectIsLogin);
-console.log(isLogin);
 const userId=useSelector(authSelectors.selectCurrentUserId);
 const user=useSelector(currentUserSelectors.selectUserInfo);
 const dispatch=useDispatch();
@@ -15,7 +14,6 @@ const dispatch=useDispatch();
 useEffect(() => {
     if(isLogin && !user){
         dispatch(currentUserActions.getCurrentUser({id:userId}))
-
     }
 
 },[userId,isLogin]);
@@ -25,7 +23,7 @@ useEffect(() =>{
     if(!isLogin && user===null){
 dispatch(authActions.reLogin())
     }
-})
+},[])
 
 
 

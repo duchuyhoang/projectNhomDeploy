@@ -1,0 +1,21 @@
+.kep-login-facebook.metro{
+    display:flex;
+    justify-content:center;
+    margin:0;
+    background-color: #fff;
+    border: 1px solid #506dab;
+    color:#506dab;
+    border-radius:6px!important;
+    font-size:14px;
+    font-weight:600;
+    width:340px;
+    text-transform:none;
+}
+
+.kep-login-facebook.metro:hover{
+    color:#fff;
+    background-color:#506dab;
+}
+.kep-login-facebook.metro:hover svg{
+    fill:#fff;
+}
