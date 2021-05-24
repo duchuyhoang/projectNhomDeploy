@@ -15,9 +15,10 @@ const userLogin = createAsyncThunk("auth/login", async (payload, { rejectWithVal
         return response.data;
     }
     catch (error) {
-        return rejectWithValue({ message: "Lỗi" });
+        return rejectWithValue({ ...error.response.data});
     }
 })
+
 
 
 const reLogin = createAsyncThunk("auth/re_login", async (payload, { rejectWithValue }) => {
@@ -67,17 +68,28 @@ const selectIsLogin = createSelector(
             return  false 
     })
 
+const selectAuthLoadingStatus=createSelector(
+    selectSelf,
+    (state)=>state.loading
+)
+
 
 const selectCurrentUserId = createSelector(
     selectSelf,
     (state) => state.id
 )
 
+const selectAuthErrorStatus=createSelector(
+    selectSelf,
+    (state)=>state.error
+)
 
 export const authSelectors = {
     selectAccessToken,
     selectIsLogin,
-    selectCurrentUserId
+    selectCurrentUserId,
+    selectAuthLoadingStatus,
+    selectAuthErrorStatus
 }
 
 
@@ -107,22 +119,22 @@ const authSlice = createSlice({
             .addCase(userLogin.rejected, (state, action) => {
                 state.accessToken = null;
                 state.refreshToken = null
-                state.error = action.message;
+                state.error = action.payload.message;
                 state.loading = "rejected";
             })
 
         // Relogin
         builder.addCase(reLogin.pending, (state, action) => {
-            state.login = "pending"
+            // state.login = "pending"
         })
             .addCase(reLogin.fulfilled, (state, action) => {
                 state.id = parseJwt(action.payload.accessToken)?.id || null;
-                state.loading = "fulfilled";
+                // state.loading = "fulfilled";
                 state.accessToken = action.payload.accessToken;
                 state.refreshToken = getCookie("cn11_refresh_token") || null;
             })
             .addCase(reLogin.rejected, (state, action) => {
-                state.loading = "rejected"
+                // state.loading = "rejected"
                 state.accessToken = null;
                 state.refreshToken = null
             })

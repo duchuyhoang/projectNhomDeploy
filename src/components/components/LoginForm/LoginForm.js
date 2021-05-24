@@ -10,6 +10,11 @@ import { uuid } from '@Ultis/uuid';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { authSelectors, authActions } from '@Core/redux/auth';
+import {FacebookLoginComponent} from "./FacebookLogin";
+
+
 
 const useLogInFormStyle = makeStyles((theme) => ({
   root: {
@@ -126,18 +131,6 @@ const upToDown = keyframes`
     }
 `;
 
-// Background
-const Background = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
-  position: fixed;
-  ${AlignCenter};
-  z-index: 2001;
-  margin: auto;
-  top: 0;
-  animation: ${fadeIn} linear 0.1s;
-`;
 // Log In Form Container
 const LogInForm = styled.div`
   height: 600px;
@@ -255,6 +248,8 @@ const UnderButton = styled.div`
     }
   }
 `;
+
+
 export const LoginForm = ({
   showModal,
   setShowModal,
@@ -262,8 +257,10 @@ export const LoginForm = ({
 }) => {
   const { isMobile } = useIsMobile();
   const logInFormStyle = useLogInFormStyle();
-
-  const modalRef = useRef();
+  const dispatch = useDispatch();
+  const isLogin = useSelector(authSelectors.selectIsLogin);
+  const loginAuthLoadingStatus = useSelector(authSelectors.selectAuthLoadingStatus);
+  const errorLogin = useSelector(authSelectors.selectAuthErrorStatus)
 
   const keyPress = useCallback(
     (e) => {
@@ -274,6 +271,27 @@ export const LoginForm = ({
     [showModal]
   );
 
+  useEffect(() => {
+    // Set another error for login 
+    if (loginAuthLoadingStatus !== "idle" && errorLogin) {
+      setError("wrongInfo", {
+        type: "manual",
+        message: errorLogin,
+      })
+    }
+
+
+  }, [loginAuthLoadingStatus, errorLogin])
+
+  // For login successful
+  useEffect(() => {
+    if (isLogin) {
+      setShowModal((prev) => !prev);
+      reset();
+    }
+  }, [isLogin])
+
+  // For click outside
   useEffect(() => {
     document.addEventListener('keydown', keyPress);
     return () => document.removeEventListener('keydown', keyPress);
@@ -301,23 +319,30 @@ export const LoginForm = ({
       .required('Please enter your email')
       .email('Email is not valid'),
     password: yup.string().required('Please enter your password'),
-    keepLogin: yup
-      .boolean()
-      .test('keep', 'Please keep login!', (value) => value),
   });
 
-  const { control, formState, handleSubmit } = useForm({
-    defaultValue: {
-      email: '',
-      password: '',
-      keepLogin: false,
-    },
+  const defaultValue = {
+    email: '',
+    password: '',
+    keepLogin: false,
+  };
+
+
+  const { control, formState, handleSubmit, reset, setError } = useForm({
+    mode: 'onChange',
+    defaultValue,
     resolver: yupResolver(schema),
   });
-  console.log('Error:', formState.errors);
 
   const handleLoginSubmit = (values) => {
-    console.log(values);
+    const { email, password } = values;
+    dispatch(authActions.userLogin({
+      email,
+      password
+    }))
+    reset({
+      ...defaultValue
+    })
   };
 
   return (
@@ -348,7 +373,7 @@ export const LoginForm = ({
             onSubmit={handleSubmit(handleLoginSubmit)}
             className={logInFormStyle.formStyle}
           >
-            <CNButton className={logInFormStyle.FbBtnStyle}>
+            {/* <CNButton className={logInFormStyle.FbBtnStyle}>
               <SVGIcon
                 name="facebook"
                 width="15px"
@@ -357,20 +382,25 @@ export const LoginForm = ({
                 className={logInFormStyle.IconFbStyle}
               />
               Login with Facebook
-            </CNButton>
+            </CNButton> */}
+            <FacebookLoginComponent />
             <LineHeaderLogIn>
               <span>Or</span>
             </LineHeaderLogIn>
             <Controller
               name="email"
               control={control}
-              render={({ field: { onChange } }) => (
+              render={({ field: { onChange, value } }) => (
                 <FormControl fullWidth>
                   <CNTextField
                     type="text"
+                    value={value ? value : ""}
                     placeholder="Enter your email"
+                    isAutoComplete={true}
                     className={logInFormStyle.textFieldStyle}
-                    inputChange={onChange}
+                    inputChange={(e) => {
+                      onChange(e)
+                    }}
                     fullWidth
                     error={!!formState.errors['email']}
                     endAdornment={
@@ -386,17 +416,22 @@ export const LoginForm = ({
                   <FormHelperText className={logInFormStyle.helperTextStyles}>
                     {formState.errors['email']?.message}
                   </FormHelperText>
+                  <FormHelperText className={logInFormStyle.helperTextStyles}>
+                    {formState.errors['wrongInfo']?.message}
+                  </FormHelperText>
                 </FormControl>
               )}
             />
             <Controller
               name="password"
               control={control}
-              render={({ field: { onChange } }) => (
+              render={({ field: { onChange, value } }) => (
                 <FormControl fullWidth>
                   <CNTextField
+                    value={value ? value : ""}
                     type={showPassword ? 'text' : 'password'}
                     placeholder="Enter password"
+                    isAutoComplete={false}
                     error={!!formState.errors['password']}
                     inputChange={onChange}
                     className={logInFormStyle.textFieldStyle}
@@ -426,7 +461,7 @@ export const LoginForm = ({
                 <Controller
                   name="keepLogin"
                   control={control}
-                  render={({ field: { onChange } }) => (
+                  render={({ field: { onChange, value } }) => (
                     <FormControl className={logInFormStyle.formControlCheckBox}>
                       <CNCheckBox
                         label={checkBoxState.label}
@@ -434,8 +469,7 @@ export const LoginForm = ({
                         checkBoxState={checkBoxState}
                         setCheckBoxState={setCheckBoxState}
                         key={checkBoxState.id}
-                        error={!!formState.errors['keepLogin']}
-                        value={checkBoxState.value}
+                        value={!!value}
                         className={logInFormStyle.checkBoxStyle}
                         onChange={onChange}
                       ></CNCheckBox>

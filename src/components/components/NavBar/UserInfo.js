@@ -68,9 +68,8 @@ white-space:nowrap;
 overflow:hidden;
 `
 
-export const UserInfo = ({ setSelectedHomeModal, setHomeModalOpen }) => {
+export const UserInfo = React.memo(({ setSelectedHomeModal, setHomeModalOpen }) => {
     const userInfo = useAuth();
-    console.log(userInfo);
     return (
         <Container>
             {userInfo.isLogin ? (
@@ -109,4 +108,4 @@ export const UserInfo = ({ setSelectedHomeModal, setHomeModalOpen }) => {
 
 
 
-}
+})

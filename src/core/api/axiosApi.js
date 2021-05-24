@@ -39,7 +39,6 @@ axiosApi.interceptors.response.use((response) => {
     async (err) => {
         const originalRequest = err.config;
         const errorResponse = err.response
-
         originalRequest.retries_times = (err.config.retries_times || 0) + 1;
         // For token if the token is expire
         // && originalRequest.url === "/re_login"
@@ -51,12 +50,12 @@ axiosApi.interceptors.response.use((response) => {
                     })
                     setNewHeader(responseRefresh.data)
 
-                    if (originalRequest.url === "/re_login"){
+                    if (originalRequest.url === "/re_login") {
                         return responseRefresh
                     }
-                        
-                    else{
-                        const responseData=await axiosApi(originalRequest);
+
+                    else {
+                        const responseData = await axiosApi(originalRequest);
 
                         return responseData
                     }
@@ -74,9 +73,6 @@ axiosApi.interceptors.response.use((response) => {
             }
 
         }
-
-
-
 
 
         return Promise.reject(err)
