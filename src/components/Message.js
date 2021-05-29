@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Stretcher } from '@Components/components/Stretcher/Stretcher';
 import { Footer } from '@Components/components/Footer/Footer';
@@ -9,7 +9,7 @@ import { CooperateForm } from './components/CooperateForm/CooperateForm';
 import { CNSelect } from '@Components/shared/CNSelect/CNSelect';
 import { components } from 'react-select';
 import CNStar from './shared/CNStar/CNStar';
-
+import {CNPropertyLabel} from './shared/CNPropertyLabel/CNPropertyLabel';
 const useStyles = makeStyles((theme) => {
   return {
     style: {
@@ -36,6 +36,11 @@ const DropdownIndicator = (props) => {
 };
 
 const Message = ({ message }) => {
+
+const state=useSelector(state=>state);
+console.log("state",state);
+
+
   const [cardList, setCardList] = useState([
     {
       SVGIcon: 'highFive',
@@ -88,6 +93,12 @@ const Message = ({ message }) => {
       >
         Login
       </button>
+      <CNPropertyLabel  type = "feature">Feature</CNPropertyLabel>
+      <CNPropertyLabel >For Sale</CNPropertyLabel>
+      <CNPropertyLabel >For Rent</CNPropertyLabel>
     </>
   );
 };
+
+
+export default Message
