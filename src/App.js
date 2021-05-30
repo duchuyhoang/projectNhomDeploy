@@ -20,8 +20,8 @@ export const App = ({ title }) => {
         <NavBar currentTab={'properties'}></NavBar>
         <Suspense fallback={<CNLoading />}>
           <Switch>
-            <Route path="/test">
-              <Message />
+            <Route path="/test" component={Message}>
+              {/* <Message /> */}
             </Route>
 
             <Route path="/home" component={Home} />
