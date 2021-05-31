@@ -1,7 +1,12 @@
+import { useEffect } from 'react';
 import { CNButton } from '@Components/shared/CNButton/CNButton';
 import { CNCheckBox } from '@Components/shared/CNCheckBox/CNCheckBox';
 import { CNSelect } from '@Components/shared/CNSelect/CNSelect';
 import { CNTextField } from '@Components/shared/CNTextField/CNTextField';
+import { useLocationSearch } from "@Core/hooks/useLocationSearch";
+import { useListUltilities } from "@Core/hooks/useListUltilities";
+import { useListImages } from "@Core/hooks/useListImages";
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   FormControl,
@@ -103,58 +108,75 @@ const Linear = styled.div`
 function AddRoom(props) {
   const classes = useStyled();
 
-  const [checkboxData, setCheckboxState] = useState([
-    {
-      label: 'Khép kín',
-      value: 'kk',
-      id: 1,
-      isChecked: false,
-    },
-    {
-      label: 'WiFi',
-      value: 'wifi',
-      id: 2,
-      isChecked: false,
-    },
-    {
-      label: 'Điều hòa',
-      value: 'dh',
-      id: 3,
-      isChecked: false,
-    },
-    {
-      label: 'Nóng lạnh',
-      value: 'nl',
-      id: 4,
-      isChecked: false,
-    },
-    {
-      label: 'Tủ quần áo',
-      value: 'tqa',
-      id: 5,
-      isChecked: false,
-    },
-    {
-      label: 'Giường',
-      value: 'g',
-      id: 6,
-      isChecked: false,
-    },
-  ]);
+  const { listProvince,
+    listDistrict,
+    listWard,
+    selectedProvince,
+    selectedDistrict,
+    selectedWard,
+    setSelectedProvince,
+    setSelectedDistrict,
+    setSelectedWard } = useLocationSearch();
 
-  const options = {
-    ward: [
-      { value: 'p1', label: 'Phường 1' },
-      { value: 'p2', label: 'Phường 2' },
-      { value: 'p3', label: 'Phường 3' },
-    ],
-    district: [
-      { value: 'd1', label: 'Quận 1' },
-      { value: 'd2', label: 'Quận 2' },
-      { value: 'd3', label: 'Quận 3' },
-    ],
-    city: [{ value: 'hn', label: 'Hà Nội' }],
-  };
+  const { listUltility } = useListUltilities();
+
+  const { listImages, setAddListImages, deleteAnImage } = useListImages();
+
+  console.log("list", listImages);
+  const [checkboxData, setCheckboxState] = useState([])
+
+
+  useEffect(() => {
+    if (listUltility)
+      setCheckboxState(listUltility.map(ultility => ({
+        label: ultility.label,
+        value: ultility.value,
+        id: ultility.value,
+        isChecked: false,
+      })))
+
+  }, [listUltility])
+
+
+  // const [checkboxData, setCheckboxState] = useState([
+  //   {
+  //     label: 'Khép kín',
+  //     value: 'kk',
+  //     id: 1,
+  //     isChecked: false,
+  //   },
+  //   {
+  //     label: 'WiFi',
+  //     value: 'wifi',
+  //     id: 2,
+  //     isChecked: false,
+  //   },
+  //   {
+  //     label: 'Điều hòa',
+  //     value: 'dh',
+  //     id: 3,
+  //     isChecked: false,
+  //   },
+  //   {
+  //     label: 'Nóng lạnh',
+  //     value: 'nl',
+  //     id: 4,
+  //     isChecked: false,
+  //   },
+  //   {
+  //     label: 'Tủ quần áo',
+  //     value: 'tqa',
+  //     id: 5,
+  //     isChecked: false,
+  //   },
+  //   {
+  //     label: 'Giường',
+  //     value: 'g',
+  //     id: 6,
+  //     isChecked: false,
+  //   },
+  // ]);
+
   const defaultValues = {
     name: '',
     capacity: '',
@@ -220,14 +242,18 @@ function AddRoom(props) {
     defaultValues,
     resolver: yupResolver(schema),
   });
+
   const handleAddSubmit = (values) => {
     console.log(values);
   };
   const handleChangeImg = (element) => {
     console.log('avs');
   };
+
   return (
+
     <Wrapper>
+      {console.log("re-ren")}
       <Container>
         <Title>Add Room</Title>
         <Content>
@@ -321,7 +347,8 @@ function AddRoom(props) {
                       type="file"
                       accept="image/png, image/jpeg image/jpg"
                       onChange={(e) => {
-                        console.log(e);
+                        setAddListImages(e.target.files)
+                        console.log(e.target.files);
                         onChange(e);
                       }}
                       multiple
@@ -330,6 +357,12 @@ function AddRoom(props) {
                   </FormControl>
                 )}
               />
+              <section>
+                {listImages.map(image => (
+                  <img src={image.previewSrc} style={{ height: 100, width: 100 }} key={image.id} />
+                ))
+                }
+              </section>
               <Controller
                 name="overview"
                 control={control}
@@ -433,12 +466,13 @@ function AddRoom(props) {
                       </Label>
                       <CNSelect
                         name={name}
-                        options={options[name]}
                         fullWidth
+                        value={selectedWard}
+                        options={listWard}
                         placeholder="Chọn phường"
                         width={'100%'}
                         onChange={(e) => {
-                          console.log(e);
+                          setSelectedWard(e);
                           onChange(e ? e.value : null);
                         }}
                       />
@@ -458,13 +492,14 @@ function AddRoom(props) {
                       </Label>
                       <CNSelect
                         name={name}
-                        options={options[name]}
+                        value={selectedDistrict}
+                        options={listDistrict}
                         fullWidth
                         placeholder="Chọn quận"
                         width={'100%'}
                         onChange={(e) => {
-                          console.log(e);
-                          onChange(e ? e.value : null);
+                          setSelectedDistrict(e);
+                          onChange(e);
                         }}
                       />
                       <FormHelperText className={classes.helperTextStyles}>
@@ -483,12 +518,13 @@ function AddRoom(props) {
                       </Label>
                       <CNSelect
                         name={name}
-                        options={options[name]}
+                        options={listProvince}
                         fullWidth
                         placeholder="Chọn thành phố"
                         width={'100%'}
+                        value={selectedProvince}
                         onChange={(e) => {
-                          console.log(e);
+                          setSelectedProvince(e === null ? e : e)
                           onChange(e ? e.value : null);
                         }}
                       />

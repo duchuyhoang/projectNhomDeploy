@@ -13,7 +13,7 @@ export const axiosApi = axios.create({
 
 
 axiosApi.interceptors.request.use((request) => {
-    console.log("request", request);
+    // console.log("request", request);
 
     const accessToken = getCookie("cn11_access_token") || null;
     const accessHeader = "Bearer " + accessToken;
@@ -27,7 +27,7 @@ axiosApi.interceptors.request.use((request) => {
 
 axiosApi.interceptors.response.use((response) => {
     const isLoginUrl = ["/login", "/re_login"]
-    console.log("response", response);
+    // console.log("response", response);
     if (response.config.url === "/login") {
         setNewHeader(response.data)
         // axiosApi.defaults.headers["Authorization"]="Bearer "+response.data.accessToken; 
@@ -42,7 +42,7 @@ axiosApi.interceptors.response.use((response) => {
         originalRequest.retries_times = (err.config.retries_times || 0) + 1;
         // For token if the token is expire
         // && originalRequest.url === "/re_login"
-        if (errorResponse.status === 401 && originalRequest.url !== "/refresh_token") {
+        if (errorResponse && errorResponse.status === 401 && originalRequest.url !== "/refresh_token") {
             if (originalRequest.retries_times <= 2) {
                 try {
                     const responseRefresh = await axiosApi.post("/refresh_token", {
@@ -63,7 +63,7 @@ axiosApi.interceptors.response.use((response) => {
                 }
                 catch (e) {
                     //   console.clear()
-                    console.log("rejected");
+                    // console.log("rejected");
                     setCookie("cn11_refresh_token", null, 0);
                     setCookie("cn11_access_token", null, 0);
 
