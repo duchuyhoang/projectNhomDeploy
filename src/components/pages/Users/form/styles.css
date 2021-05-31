@@ -1,0 +1,18 @@
+.MuiInput-formControl {
+  margin: 0 !important;
+}
+input[type='file']::-webkit-file-upload-button {
+  display: none;
+}
+input[type='file']::before {
+  content: 'Upload File';
+  display: inline-block;
+  background: #f7f7f7;
+  outline: none;
+  white-space: nowrap;
+  cursor: pointer;
+  padding: 20px 35px;
+  border: solid 1px #ebebeb;
+  font-weight: 700;
+  border-radius: 4px;
+}

@@ -9,17 +9,22 @@ import {
 } from 'react-router-dom';
 import loadable from '@loadable/component';
 
-const HomeListPage = loadable(() => import('./list/index'), {
+const FormAddRoom = loadable(() => import('./form/AddRoom'), {
+  fallback: <CNLoading />,
+});
+const HomeListPage = loadable(() => import('../Property/list/index'), {
   fallback: <CNLoading />,
 });
 
-const Property = (props) => {
+const Users = (props) => {
   const { path } = useRouteMatch();
+  console.log('🚀 ~ path', path);
 
   return (
     <>
       <Suspense fallback={<CNLoading />}>
         <Switch>
+          <Route path={`${path}/add-room`} component={FormAddRoom} />
           <Route path={`${path}`} component={HomeListPage} />
           {/* <Route path="/" /> */}
         </Switch>
@@ -27,4 +32,4 @@ const Property = (props) => {
     </>
   );
 };
-export default Property;
+export default Users;
