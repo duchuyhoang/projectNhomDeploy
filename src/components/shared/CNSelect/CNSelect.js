@@ -125,7 +125,7 @@ export const CNSelect = ({ options, customComponents, ...rest }) => {
         ...customComponents,
       }}
       isClearable={true}
-      isSearchable={false}
+      // isSearchable={false}
       styles={styles}
       placeholder={'Select...'}
       width={selectWidth}

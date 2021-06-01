@@ -13,7 +13,8 @@ const theme = createMuiTheme({
             hover: "#FF5A5F"
         },
         background: {
-            paper: "#FF5A5F"
+            paper: "#FF5A5F",
+            secondary: "#FFFFFF"
         },
         text: {
             primary: "#484848",
