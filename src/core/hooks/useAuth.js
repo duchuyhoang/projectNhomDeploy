@@ -8,7 +8,10 @@ export const useAuth=()=>{
 
 const isLogin=useSelector(authSelectors.selectIsLogin);
 const userId=useSelector(authSelectors.selectCurrentUserId);
+const permission = useSelector(authSelectors.selectCurrentUserPermissions)
+const authLoading=useSelector(authSelectors.selectAuthLoadingStatus);
 const user=useSelector(currentUserSelectors.selectUserInfo);
+
 const dispatch=useDispatch();
 
 useEffect(() => {
@@ -40,6 +43,9 @@ const signIn=useCallback((data)=>{
 
 return {
     isLogin,
+    userId,
+    permission,
+    authLoading,
     ...user,
     signOut,
     signIn

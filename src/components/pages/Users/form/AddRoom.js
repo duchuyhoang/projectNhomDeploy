@@ -6,6 +6,9 @@ import { CNTextField } from '@Components/shared/CNTextField/CNTextField';
 import { useLocationSearch } from "@Core/hooks/useLocationSearch";
 import { useListUltilities } from "@Core/hooks/useListUltilities";
 import { useListImages } from "@Core/hooks/useListImages";
+import { useAuth } from "@Core/hooks/useAuth";
+import { axiosApi } from "@Core/api/axiosApi";
+
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
@@ -108,6 +111,7 @@ const Linear = styled.div`
 function AddRoom(props) {
   const classes = useStyled();
 
+const {userId}=useAuth();
   const { listProvince,
     listDistrict,
     listWard,
@@ -121,11 +125,8 @@ function AddRoom(props) {
   const { listUltility } = useListUltilities();
 
   const { listImages, setAddListImages, deleteAnImage } = useListImages();
-
-  console.log("list", listImages);
   const [checkboxData, setCheckboxState] = useState([])
-
-
+  console.log("list", listImages);
   useEffect(() => {
     if (listUltility)
       setCheckboxState(listUltility.map(ultility => ({
@@ -137,60 +138,21 @@ function AddRoom(props) {
 
   }, [listUltility])
 
-
-  // const [checkboxData, setCheckboxState] = useState([
-  //   {
-  //     label: 'Khép kín',
-  //     value: 'kk',
-  //     id: 1,
-  //     isChecked: false,
-  //   },
-  //   {
-  //     label: 'WiFi',
-  //     value: 'wifi',
-  //     id: 2,
-  //     isChecked: false,
-  //   },
-  //   {
-  //     label: 'Điều hòa',
-  //     value: 'dh',
-  //     id: 3,
-  //     isChecked: false,
-  //   },
-  //   {
-  //     label: 'Nóng lạnh',
-  //     value: 'nl',
-  //     id: 4,
-  //     isChecked: false,
-  //   },
-  //   {
-  //     label: 'Tủ quần áo',
-  //     value: 'tqa',
-  //     id: 5,
-  //     isChecked: false,
-  //   },
-  //   {
-  //     label: 'Giường',
-  //     value: 'g',
-  //     id: 6,
-  //     isChecked: false,
-  //   },
-  // ]);
-
   const defaultValues = {
     name: '',
     capacity: '',
     acreage: '',
     overview: '',
     house_number: '',
-    corner: '',
+    alley: '',
     street: '',
     ward: null,
     district: null,
     city: null,
+    rent_or_sale: 0,
     price: '',
-    price_electric: '',
-    price_water: '',
+    utility_bill: '',
+    water_bill: '',
   };
 
   const schema = yup.object().shape({
@@ -207,7 +169,7 @@ function AddRoom(props) {
       .string()
       .required('Vui lòng số nhà')
       .matches(/^[0-9]+$/, 'Số nhà không hợp lệ'),
-    corner: yup
+    alley: yup
       .string()
       .required('Vui lòng nhập ngõ ngách')
       .matches(/^[0-9|/]+$/, 'Ngõ ngách không hợp lệ'),
@@ -228,32 +190,78 @@ function AddRoom(props) {
       .string()
       .required('Vui lòng nhập giá phòng')
       .matches(/^[0-9]+$/, 'Giá phòng không hợp lệ'),
-    price_electric: yup
+    utility_bill: yup
       .string()
       .required('Vui lòng nhập giá điện')
       .matches(/^[0-9]+$/, 'Giá điện không hợp lệ'),
-    price_water: yup
+    water_bill: yup
       .string()
       .required('Vui lòng nhập giá nước')
       .matches(/^[0-9]+$/, 'Giá nước không hợp lệ'),
   });
+
   const { control, handleSubmit, formState } = useForm({
     mode: 'onSubmit',
     defaultValues,
     resolver: yupResolver(schema),
   });
 
+console.log(formState.errors);
+
   const handleAddSubmit = (values) => {
-    console.log(values);
-  };
-  const handleChangeImg = (element) => {
-    console.log('avs');
-  };
+console.log("submit");
+    var roomForm = new FormData();
+
+roomForm.append("belongTo",userId)
+
+    // For data
+    for (let key in values) {
+      if (key == "overview") {
+        roomForm.append(key, values[key].replace(/\n/g, "<br />"));
+      }
+      else if (key !== "image") {
+        roomForm.append(key, values[key]);
+      }
+
+    }
+
+    // For images
+
+    if (listImages.length === 1) {
+      roomForm.append("singleImage", listImages[0].toUpload);
+    }
+    else if (listImages.length > 1) {
+      listImages.forEach((image, index) => {
+        roomForm.append("multipleRoomImage",image.toUpload)
+      })
+    }
+
+    for (var value of roomForm.values()) {
+      console.log(value);
+   }
+
+// For ultility
+checkboxData.forEach((ultility,index)=>{
+  console.log(ultility);
+if(ultility.isChecked){
+  roomForm.append("ultilities",JSON.stringify({id:ultility.value}))
+}
+});
+
+axiosApi.post("/room/uploadARoom",roomForm
+).then(value=>{
+  console.log("ok");
+}).catch(err=>{
+  console.log(err);
+})
+
+
+
+  }
 
   return (
 
     <Wrapper>
-      {console.log("re-ren")}
       <Container>
         <Title>Add Room</Title>
         <Content>
@@ -348,7 +356,6 @@ function AddRoom(props) {
                       accept="image/png, image/jpeg image/jpg"
                       onChange={(e) => {
                         setAddListImages(e.target.files)
-                        console.log(e.target.files);
                         onChange(e);
                       }}
                       multiple
@@ -409,17 +416,17 @@ function AddRoom(props) {
                   )}
                 />
                 <Controller
-                  name="corner"
+                  name="alley"
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <FormControl className={classes.formControl}>
-                      <Label htmlFor="form-add-corner">
+                      <Label htmlFor="form-add-alley">
                         Ngõ ngách<span> *</span>
                       </Label>
                       <CNTextField
-                        id="form-add-corner"
+                        id="form-add-alley"
                         type="text"
-                        error={!!formState.errors['corner']}
+                        error={!!formState.errors['alley']}
                         fullWidth
                         value={value ? value : ''}
                         inputChange={(e) => {
@@ -427,7 +434,7 @@ function AddRoom(props) {
                         }}
                       />
                       <FormHelperText className={classes.helperTextStyles}>
-                        {formState.errors['corner']?.message}
+                        {formState.errors['alley']?.message}
                       </FormHelperText>
                     </FormControl>
                   )}
@@ -499,7 +506,7 @@ function AddRoom(props) {
                         width={'100%'}
                         onChange={(e) => {
                           setSelectedDistrict(e);
-                          onChange(e);
+                          onChange(e ? e.value : null);
                         }}
                       />
                       <FormHelperText className={classes.helperTextStyles}>
@@ -565,7 +572,7 @@ function AddRoom(props) {
                   )}
                 />
                 <Controller
-                  name="price_electric"
+                  name="utility_bill"
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <FormControl className={classes.formControl}>
@@ -576,7 +583,7 @@ function AddRoom(props) {
                       <CNTextField
                         id="price-electric"
                         type="text"
-                        error={!!formState.errors['price_electric']}
+                        error={!!formState.errors['utility_bill']}
                         fullWidth
                         value={value ? value : ''}
                         inputChange={(e) => {
@@ -584,13 +591,13 @@ function AddRoom(props) {
                         }}
                       />
                       <FormHelperText className={classes.helperTextStyles}>
-                        {formState.errors['price_electric']?.message}
+                        {formState.errors['utility_bill']?.message}
                       </FormHelperText>
                     </FormControl>
                   )}
                 />
                 <Controller
-                  name="price_water"
+                  name="water_bill"
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <FormControl className={classes.formControl}>
@@ -601,7 +608,7 @@ function AddRoom(props) {
                       <CNTextField
                         id="price-water"
                         type="text"
-                        error={!!formState.errors['price_water']}
+                        error={!!formState.errors['water_bill']}
                         fullWidth
                         value={value ? value : ''}
                         inputChange={(e) => {
@@ -609,7 +616,7 @@ function AddRoom(props) {
                         }}
                       />
                       <FormHelperText className={classes.helperTextStyles}>
-                        {formState.errors['price_water']?.message}
+                        {formState.errors['water_bill']?.message}
                       </FormHelperText>
                     </FormControl>
                   )}
