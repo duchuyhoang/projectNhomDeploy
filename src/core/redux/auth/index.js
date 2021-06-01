@@ -79,6 +79,11 @@ const selectCurrentUserId = createSelector(
     (state) => state.id
 )
 
+const selectCurrentUserPermissions = createSelector(
+    selectSelf,
+    (state) => state.permission
+)
+
 const selectAuthErrorStatus=createSelector(
     selectSelf,
     (state)=>state.error
@@ -89,7 +94,8 @@ export const authSelectors = {
     selectIsLogin,
     selectCurrentUserId,
     selectAuthLoadingStatus,
-    selectAuthErrorStatus
+    selectAuthErrorStatus,
+    selectCurrentUserPermissions
 }
 
 
@@ -100,6 +106,7 @@ const authSlice = createSlice({
         loading: "idle",
         error: null,
         id: null,
+        permission:"GUEST",
         accessToken: null,
         refreshToken: null
     },
@@ -111,6 +118,7 @@ const authSlice = createSlice({
         })
             .addCase(userLogin.fulfilled, (state, action) => {
                 state.id = parseJwt(action.payload.accessToken)?.id || null;
+                state.permission=parseJwt(action.payload.accessToken)?.permission;
                 state.accessToken = action.payload.accessToken;
                 state.refreshToken = action.payload.refreshToken
                 state.loading = "fulfilled";
@@ -126,17 +134,20 @@ const authSlice = createSlice({
         // Relogin
         builder.addCase(reLogin.pending, (state, action) => {
             // state.login = "pending"
+            state.loading = "loading"
         })
             .addCase(reLogin.fulfilled, (state, action) => {
                 state.id = parseJwt(action.payload.accessToken)?.id || null;
-                // state.loading = "fulfilled";
+                state.permission=parseJwt(action.payload.accessToken)?.permission;
                 state.accessToken = action.payload.accessToken;
                 state.refreshToken = getCookie("cn11_refresh_token") || null;
+                state.loading = "fulfilled"
             })
             .addCase(reLogin.rejected, (state, action) => {
                 // state.loading = "rejected"
                 state.accessToken = null;
                 state.refreshToken = null
+                state.loading = "rejected"
             })
 
 // Sign out

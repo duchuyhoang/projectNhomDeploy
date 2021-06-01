@@ -10,8 +10,12 @@ const Message = lazy(() => import('@Components/Message'));
 import { NavBar } from '@Components/components/NavBar/NavBar';
 const Home = lazy(() => import('@Components/pages/Home'));
 const Property = lazy(() => import('@Components/pages/Property'));
-const Users = lazy(() => import('@Components/pages/Users'));
+// const Users = lazy(() => import('@Components/pages/Users'));
+import UserPageRoute from "@Components/pages/Users"
 import { CNLoading } from '@Components/shared/CNLoading/CNLoading';
+import { PrivateRoute } from "@Components/PrivateRoute";
+
+
 
 export const App = ({ title }) => {
   return (
@@ -28,7 +32,10 @@ export const App = ({ title }) => {
 
             <Route path="/property" component={Property} />
 
-            <Route path="/users" component={Users}></Route>
+            <Route path="/users" >
+              <PrivateRoute accessRule="MEMBER"> <UserPageRoute /> </PrivateRoute>
+            </Route>
+            
             <Route path="/">
               <Redirect
                 to={{
