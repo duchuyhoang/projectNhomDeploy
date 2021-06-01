@@ -4,7 +4,7 @@ import { Stretcher } from '@Components/components/Stretcher/Stretcher';
 import { ServiceComponent } from '@Components/components/ServiceComponent/ServiceComponent';
 import { FindHomeComponent } from '@Components/components/FindHomeComponent/FindHomeComponent';
 import CNProgressBar from '@Components/shared/CNProgressBar/CNProgressBar';
-import CNPost from '@Components/shared/CNPost/CNPost';
+import RoomCard from '@Components/components/RoomCard/RoomCard';
 
 const MainHome = (props) => {
   return (
@@ -12,8 +12,8 @@ const MainHome = (props) => {
       <FindHomeComponent />
       <CNProgressBar value={50} label={'HoaYeuChang'} />
       <ServiceComponent />
+      <RoomCard />
       <Stretcher />
-      <CNPost />
       <Footer />
     </>
   );

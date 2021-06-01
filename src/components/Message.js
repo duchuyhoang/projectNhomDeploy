@@ -10,6 +10,8 @@ import { CNSelect } from '@Components/shared/CNSelect/CNSelect';
 import { components } from 'react-select';
 import CNStar from './shared/CNStar/CNStar';
 import {CNPropertyLabel} from './shared/CNPropertyLabel/CNPropertyLabel';
+import {UserProfile} from './components/UserProfile/UserProfile'
+import UserTestImg from '../assets/background/UserTestImg.jpg'
 const useStyles = makeStyles((theme) => {
   return {
     style: {
@@ -96,7 +98,18 @@ console.log("state",state);
       <CNPropertyLabel  type = "feature">Feature</CNPropertyLabel>
       <CNPropertyLabel >For Sale</CNPropertyLabel>
       <CNPropertyLabel >For Rent</CNPropertyLabel>
-    </>
+      <UserProfile
+       avatar={UserTestImg}
+       name = "Hoang Duc Huy"
+       quantityProperty = {2}
+       job = "Developer"
+       phone = "0123456789"
+       fax = "089456123"
+       email = "usertest@gmail.com"
+       website = "usertest.com"
+       link = "https://www.facebook.com/croong.hoang"
+      />
+        </>
   );
 };
 
