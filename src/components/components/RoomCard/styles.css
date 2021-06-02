@@ -1,0 +1,25 @@
+.slick-slide {
+  align-items: flex-start;
+}
+.slick-arrow {
+  background-color: transparent;
+  padding: 0;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  transition: all 0.3s ease-in-out 0s;
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  border: 'none';
+  border-radius: 50%;
+  outline: none;
+  color: #fff;
+}
+.slick-arrow:hover,
+.slick-arrow:active,
+.slick-arrow:focus,
+.slick-arrow:visited {
+  background-color: transparent;
+}
