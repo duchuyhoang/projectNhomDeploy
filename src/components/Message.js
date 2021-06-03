@@ -11,7 +11,9 @@ import { components } from 'react-select';
 import CNStar from './shared/CNStar/CNStar';
 import { CNPropertyLabel } from './shared/CNPropertyLabel/CNPropertyLabel';
 import { CNTab } from './shared/CNTab/CNTab'
-import { getLatestRoom } from '../core/redux/room/index'
+import { roomSelectors, roomActions } from '../core/redux/room/index'
+
+
 const useStyles = makeStyles((theme) => {
   return {
     style: {
@@ -43,10 +45,12 @@ const Message = ({ message }) => {
   // console.log("state",state);
 
   useEffect(() => {
-    dispatch(getLatestRoom())
+    dispatch(roomActions.getLatestRoom())
   }, [])
   const listRoom = useSelector(state => state.room)
-  console.log(listRoom);
+  const test = useSelector(roomSelectors.roomSelector.selectAll) // lay ra o day
+  console.log(listRoom)
+  console.log(test)
 
   const [cardList, setCardList] = useState([
     {
