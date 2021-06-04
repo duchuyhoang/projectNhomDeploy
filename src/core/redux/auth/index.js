@@ -15,7 +15,7 @@ const userLogin = createAsyncThunk("auth/login", async (payload, { rejectWithVal
         return response.data;
     }
     catch (error) {
-        return rejectWithValue({ ...error.response.data});
+        return rejectWithValue({ ...error.response.data });
     }
 })
 
@@ -47,6 +47,24 @@ const logOut = createAsyncThunk("auth/log_out", async (payload, { rejectWithValu
 })
 
 
+
+const signUp = createAsyncThunk("auth/signup", async (payload, { rejectWithValue }) => {
+    const { user_name, password, email } = payload;
+    try {
+        const response = await axiosApi.post("/signup", {
+            user_name,
+            password,
+            email
+        })
+        return response.data;
+    }
+    catch (err) {
+       return  rejectWithValue({...err.response.data})
+    }
+})
+
+
+
 // Selector
 
 const selectSelf = (state) => state.auth
@@ -65,12 +83,12 @@ const selectIsLogin = createSelector(
             return parsedToken.exp * 1000 > now ? true : false
         }
         else
-            return  false 
+            return false
     })
 
-const selectAuthLoadingStatus=createSelector(
+const selectAuthLoadingStatus = createSelector(
     selectSelf,
-    (state)=>state.loading
+    (state) => state.loading
 )
 
 
@@ -84,9 +102,9 @@ const selectCurrentUserPermissions = createSelector(
     (state) => state.permission
 )
 
-const selectAuthErrorStatus=createSelector(
+const selectAuthErrorStatus = createSelector(
     selectSelf,
-    (state)=>state.error
+    (state) => state.error
 )
 
 export const authSelectors = {
@@ -106,7 +124,7 @@ const authSlice = createSlice({
         loading: "idle",
         error: null,
         id: null,
-        permission:"GUEST",
+        permission: "GUEST",
         accessToken: null,
         refreshToken: null
     },
@@ -118,7 +136,7 @@ const authSlice = createSlice({
         })
             .addCase(userLogin.fulfilled, (state, action) => {
                 state.id = parseJwt(action.payload.accessToken)?.id || null;
-                state.permission=parseJwt(action.payload.accessToken)?.permission;
+                state.permission = parseJwt(action.payload.accessToken)?.permission;
                 state.accessToken = action.payload.accessToken;
                 state.refreshToken = action.payload.refreshToken
                 state.loading = "fulfilled";
@@ -138,7 +156,7 @@ const authSlice = createSlice({
         })
             .addCase(reLogin.fulfilled, (state, action) => {
                 state.id = parseJwt(action.payload.accessToken)?.id || null;
-                state.permission=parseJwt(action.payload.accessToken)?.permission;
+                state.permission = parseJwt(action.payload.accessToken)?.permission;
                 state.accessToken = action.payload.accessToken;
                 state.refreshToken = getCookie("cn11_refresh_token") || null;
                 state.loading = "fulfilled"
@@ -150,18 +168,38 @@ const authSlice = createSlice({
                 state.loading = "rejected"
             })
 
-// Sign out
-builder.addCase(logOut.pending, (state, action) => {
-    state.login = "pending"
-})
-    .addCase(logOut.fulfilled, (state, action) => {
-        state.id = null;
-        state.loading = "idle";
-        state.accessToken = null;
-        state.refreshToken = null
-    })
-    .addCase(logOut.rejected, (state, action) => {
-    })
+
+        // signup
+        builder.addCase(signUp.pending, (state, action) => {
+            state.loading = "pending";
+        })
+            .addCase(signUp.fulfilled, (state, action) => {
+                console.log(action);
+                state.loading = "fulfilled";
+                state.id = parseJwt(action.payload.accessToken)?.id || null;
+                state.permission = parseJwt(action.payload.accessToken)?.permission;
+                state.accessToken = action.payload.accessToken;
+                state.refreshToken = action.payload.refreshToken;
+                setCookie("cn11_access_token",action.payload.accessToken,100)
+                setCookie("cn11_refresh_token",action.payload.refreshToken,100)
+            })
+            .addCase(signUp.rejected, (state, action) => {
+                state.loading = "rejected";
+                state.error = action.payload.message;
+            })
+
+        // Sign out
+        builder.addCase(logOut.pending, (state, action) => {
+            state.login = "pending"
+        })
+            .addCase(logOut.fulfilled, (state, action) => {
+                state.id = null;
+                state.loading = "idle";
+                state.accessToken = null;
+                state.refreshToken = null
+            })
+            .addCase(logOut.rejected, (state, action) => {
+            })
 
     }
 
@@ -170,6 +208,7 @@ builder.addCase(logOut.pending, (state, action) => {
 
 export const authActions = {
     userLogin,
+    signUp,
     reLogin,
     logOut
 }
