@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Stretcher } from '@Components/components/Stretcher/Stretcher';
 import { Footer } from '@Components/components/Footer/Footer';
@@ -9,8 +9,11 @@ import { CooperateForm } from './components/CooperateForm/CooperateForm';
 import { CNSelect } from '@Components/shared/CNSelect/CNSelect';
 import { components } from 'react-select';
 import CNStar from './shared/CNStar/CNStar';
-import {CNPropertyLabel} from './shared/CNPropertyLabel/CNPropertyLabel';
-import {CNTab} from './shared/CNTab/CNTab'
+import { CNPropertyLabel } from './shared/CNPropertyLabel/CNPropertyLabel';
+import { CNTab } from './shared/CNTab/CNTab'
+import { roomSelectors, roomActions } from '../core/redux/room/index'
+
+
 const useStyles = makeStyles((theme) => {
   return {
     style: {
@@ -37,10 +40,17 @@ const DropdownIndicator = (props) => {
 };
 
 const Message = ({ message }) => {
+  const dispatch = useDispatch();
+  // const state=useSelector(state=>state);
+  // console.log("state",state);
 
-const state=useSelector(state=>state);
-console.log("state",state);
-
+  useEffect(() => {
+    dispatch(roomActions.getLatestRoom())
+  }, [])
+  const listRoom = useSelector(state => state.room)
+  const test = useSelector(roomSelectors.roomSelector.selectAll) // lay ra o day
+  console.log(listRoom)
+  console.log(test)
 
   const [cardList, setCardList] = useState([
     {
@@ -75,9 +85,9 @@ console.log("state",state);
     },
   ]);
   const tabList = [
-    {label: "Overview", component : <h1>Lorem ipsum dolor sit amet, consectet</h1>},
-    {label: "Properties", component : <h1>From Quất Lâm with love  </h1>},
-    {label: "Reviews", component : <h1>Sếp Huy đẹp trai!!!</h1>},
+    { label: "Overview", component: <h1>Lorem ipsum dolor sit amet, consectet</h1> },
+    { label: "Properties", component: <h1>From Quất Lâm with love  </h1> },
+    { label: "Reviews", component: <h1>Sếp Huy đẹp trai!!!</h1> },
   ];
   return (
     <>
@@ -99,10 +109,11 @@ console.log("state",state);
       >
         Login
       </button>
-      <CNPropertyLabel  type = "feature">Feature</CNPropertyLabel>
+      <CNPropertyLabel type="feature">Feature</CNPropertyLabel>
       <CNPropertyLabel >For Sale</CNPropertyLabel>
       <CNPropertyLabel >For Rent</CNPropertyLabel>
-      <CNTab tabList={tabList}/>
+      <CNTab tabList={tabList} />
+
     </>
   );
 };
