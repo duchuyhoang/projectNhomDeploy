@@ -9,7 +9,7 @@ currentUser:currentUserReducer,
 room: roomReducer
 }
 const rootReducer=combineReducers(reducer)
-
+const preloadedState = {};
 
 const resettableReducer=(state,action)=>{
     if(action.type==="auth/log_out/fulfilled"){
@@ -22,6 +22,7 @@ const resettableReducer=(state,action)=>{
 
 
 export const store=configureStore({
-    reducer:resettableReducer
+    reducer:resettableReducer,
+    preloadedState
 })
 

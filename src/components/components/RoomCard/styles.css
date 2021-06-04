@@ -1,6 +1,10 @@
 .slick-slide {
   align-items: flex-start;
 }
+.slick-list{
+  /* height:300px; */
+  /* overflow:hidden; */
+}
 .slick-arrow {
   background-color: transparent;
   padding: 0;

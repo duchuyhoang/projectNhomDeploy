@@ -1,53 +1,37 @@
-import { createAsyncThunk, createSlice, createEntityAdapter } from "@reduxjs/toolkit";
-import { axiosApi } from "@Core/api/axiosApi";
+import {combineReducers} from "redux";
 import { createSelector } from "reselect";
 
+import homeRoomReducer,{homeRoomAdapter,getLatestHomeRoom} from "./homeRoom";
 
-const roomAdapter = createEntityAdapter();
 
-export const getLatestRoom = createAsyncThunk(
-    '/room/getLatestRoom',
-    async(payload = 18, {rejectWithValue}) => {
-        
-        try {
-            const {data} = await axiosApi.get(`/room/getLatest/${payload}`)
-            return data;
-        } catch (error) {
-            return rejectWithValue({ message: "Failed to get latest room" });
-        }
-    }
-)
+const selectSelf=(state)=> state.room
 
-const roomSelector = roomAdapter.getSelectors((state) => state.room);
 
-const roomSlice = createSlice({
-    name: 'room',
-    initialState: roomAdapter.getInitialState({
-        
-            loading: "idle",
-            error: null
-    }),
-    reducers:{},
-    extraReducers: (builder) =>{
-        builder.addCase(getLatestRoom.pending,(state, action) => {
-            state.loading = "pending";
-        })
-            .addCase(getLatestRoom.fulfilled, (state, action) => {
-                state.loading = "done";
-                roomAdapter.setAll(state,action.payload.data)
-            })
-            .addCase(getLatestRoom.rejected, (state, action) => {
-                state.loading = "error";
-            state.error = action.payload.message;
-            })
-     
-    }
+
+// Home room
+const selectHomeRoom=createSelector(selectSelf,(state)=>state.homeRoom)
+const homeRoomSelectors=homeRoomAdapter.getSelectors(selectHomeRoom);
+
+
+
+
+const homeRoomSelectAll=createSelector(homeRoomSelectors.selectAll,(state)=>state)
+
+
+
+// homeRoomSelectors.selectAll
+
+export const roomSelectors={
+    homeRoomSelectAll
+}
+
+export const roomActions={
+    getLatestHomeRoom,
+    // getById:
+}
+
+
+export default combineReducers({
+ homeRoom:homeRoomReducer,
+
 })
-export const roomSelectors = {
-    roomSelector
-}
-export const roomActions = {
-    getLatestRoom
-}
-export default roomSlice.reducer
-

@@ -6,6 +6,9 @@ import React from 'react';
 import Slider from 'react-slick';
 import styled from 'styled-components';
 import RoomCardIcon from './RoomCardIcon';
+import Moment from 'react-moment';
+import noImage from "@Assets/background/noImage.jpg"
+
 import './styles.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -76,6 +79,7 @@ const useStyles = makeStyles((theme) => ({
   imageContainer: {
     display: 'block!important',
     width: '100%',
+    height: "270px"
   },
   icon: {
     position: 'absolute',
@@ -140,6 +144,7 @@ const PropertyLocation = styled.div`
 const PropertyMetas = styled.div`
   display: flex;
   align-items: center;
+  justify-content:space-around;
   padding-top: 8px;
 `;
 const MetaItem = styled.div`
@@ -171,7 +176,7 @@ const AvatarAuthor = styled.div`
   }
 `;
 
-function RoomCard(props) {
+function RoomCard({ name, city, district, ward, list_images, price, capacity, acreage, user_name, user_avatar, list_utilities,createTime }) {
   const classes = useStyles();
   const settings = {
     accessibility: true,
@@ -187,31 +192,27 @@ function RoomCard(props) {
       <Top>
         <ItemSlide>
           <ImgWrapper>
-            <Slider {...settings} className={classes.slickSlide}>
-              <div className={classes.imageContainer}>
-                <img
-                  className={classes.image}
-                  src={
-                    'https://www.demoapus-wp1.com/homeo/wp-content/uploads/2020/04/24-850x550.jpg'
-                  }
-                />
-              </div>
-              <div className={classes.imageContainer}>
-                <img
-                  className={classes.image}
-                  src={
-                    'https://www.demoapus-wp1.com/homeo/wp-content/uploads/2020/04/24-850x550.jpg'
-                  }
-                />
-              </div>
-              <div className={classes.imageContainer}>
-                <img
-                  className={classes.image}
-                  src={
-                    'https://www.demoapus-wp1.com/homeo/wp-content/uploads/2020/04/24-850x550.jpg'
-                  }
-                />
-              </div>
+            <Slider {...settings} className={classes.slickSlide} >
+
+              {list_images && list_images?.length !== 0 ? list_images.map((image) => {
+                return (
+                  <div className={classes.imageContainer}>
+                    <img
+                      style={{ objectFit: "cover", height: "100%" }}
+                      key={image.imagesIds}
+                      className={classes.image}
+                      src={
+                        image.imagesLinks
+                      }
+                    />
+                  </div>
+                )
+              }) :
+                <div className={classes.imageContainer}>
+                  <img src={noImage} style={{ objectFit: "cover", height: "100%" }} />
+                </div>
+              }
+
             </Slider>
           </ImgWrapper>
           <CNPropertyLabel
@@ -219,7 +220,7 @@ function RoomCard(props) {
             children={`For Sale`}
           />
           <ItemBottom>
-            <PriceItem>$5000</PriceItem>
+            <PriceItem>{price} VNĐ</PriceItem>
             <RoomCardIcon
               selected={false}
               icon={<SVGIcon name="favourite" className={classes.icon} />}
@@ -237,27 +238,27 @@ function RoomCard(props) {
           <PropertyTitle>
             <Typography component="h2" className={classes.h2Type}>
               <a className={classes.h2Title} href="#">
-                Diamond Manor Department
+               {name}
               </a>
             </Typography>
           </PropertyTitle>
           <PropertyLocation>
             <SVGIcon name="location" className={classes.mgr} />
-            <span>Hà đông - Hà Nội</span>
+            <span>{ward +" , " + district +" , " + city}</span>
           </PropertyLocation>
           <PropertyMetas>
             <MetaItem>
-              <span>Beds: {'4'}</span>
+              <span>Capacity: {capacity}</span>
             </MetaItem>
             <MetaItem>
               <span>
-                Diện tích: {'20'}
+                Diện tích: {acreage}
                 {'\u33A1'}
               </span>
             </MetaItem>
-            <MetaItem>
+            {/* <MetaItem>
               <span>{'Khép kín'}</span>
-            </MetaItem>
+            </MetaItem> */}
           </PropertyMetas>
         </ContentProperty>
       </Top>
@@ -265,15 +266,15 @@ function RoomCard(props) {
         <AvatarWrapper>
           <AvatarImg>
             <a href="#">
-              <CNAvatar src="https://g5p6r6b9.stackpathcdn.com/homeo/wp-content/uploads/2020/02/9-150x150.jpg" />
+              <CNAvatar src={user_avatar} />
             </a>
           </AvatarImg>
           <AvatarAuthor>
-            <a href="#">Huy Đần</a>
+            <a href="#">{user_name}</a>
           </AvatarAuthor>
         </AvatarWrapper>
         <TimeRight>
-          <p>{'1 year ago'}</p>
+         <Moment toNow>{createTime}</Moment>
         </TimeRight>
       </Bottom>
     </Paper>

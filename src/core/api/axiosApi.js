@@ -40,7 +40,6 @@ if(response.config.url==="/signup"){
     setCookie("cn11_access_token", response.data.refreshToken, 100);
 }
 
-    console.log(response);
     return response
 
 
