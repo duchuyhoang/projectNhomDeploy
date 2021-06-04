@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react'
 import { CNSelect } from '@Components/shared/CNSelect/CNSelect';
 import { CNTextField } from '@Components/shared/CNTextField/CNTextField';
 import { SVGIcon } from '@Components/shared/SvgIcon/Icon';
@@ -5,12 +6,14 @@ import useIsMobile from '@Core/hooks/useIsMobile';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormControl, FormHelperText, makeStyles } from '@material-ui/core';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { components } from 'react-select';
 import styled, { keyframes } from 'styled-components';
 import * as yup from 'yup';
 import { CNButton } from '../../shared/CNButton/CNButton';
+import { useDispatch, useSelector } from 'react-redux';
+import { authSelectors, authActions } from '@Core/redux/auth';
+
 
 RegisterForm.propTypes = {};
 
@@ -144,6 +147,27 @@ const SmallText = styled.small`
 function RegisterForm({ setSelectedHomeModal, setShowModal, showModal }) {
   const { isMobile } = useIsMobile();
   const RegisterStyle = useRegisterStyle();
+  const dispatch = useDispatch();
+  const isLogin = useSelector(authSelectors.selectIsLogin);
+  const loginAuthLoadingStatus = useSelector(authSelectors.selectAuthLoadingStatus);
+  const errorSignUp = useSelector(authSelectors.selectAuthErrorStatus)
+
+
+  useEffect(() => {
+    // Set another error for login 
+    if (loginAuthLoadingStatus !== "idle" && errorSignUp) {
+      setError("wrongInfo", {
+        type: "manual",
+        message: errorSignUp,
+      })
+    }
+
+
+  }, [loginAuthLoadingStatus, errorSignUp])
+
+
+
+
 
   //custom select
   const DropdownIndicator = (props) => {
@@ -170,10 +194,10 @@ function RegisterForm({ setSelectedHomeModal, setShowModal, showModal }) {
     setRetypeShowPassword((x) => !x);
   };
   const schema = yup.object().shape({
-    userName: yup
+    user_name: yup
       .string()
       .required('Please enter your User name')
-      .min(4, 'Username too short. At least 4 characters is required,'),
+      .min(4, 'User name too short. At least 4 characters is required,'),
     email: yup
       .string()
       .required('Please enter your email')
@@ -187,9 +211,9 @@ function RegisterForm({ setSelectedHomeModal, setShowModal, showModal }) {
       .oneOf([yup.ref('password')], 'Password must be equal Confirm Password'),
   });
 
-  const { handleSubmit, control, formState } = useForm({
+  const { handleSubmit, control, formState, reset, setError } = useForm({
     defaultValues: {
-      userName: '',
+      user_name: '',
       email: '',
       password: '',
       retypePassword: '',
@@ -197,9 +221,22 @@ function RegisterForm({ setSelectedHomeModal, setShowModal, showModal }) {
     },
     resolver: yupResolver(schema),
   });
-  console.log('Error:', formState.errors);
+  console.log(formState.errors);
+
+  // Disable modal
+  useEffect(() => {
+    if (isLogin) {
+      setShowModal((prev) => !prev);
+      reset();
+    }
+  }, [isLogin])
+
+
   const handleResgisterSubmit = (values) => {
-    console.log(values);
+
+    const { user_name, password, email } = values;
+
+    dispatch(authActions.signUp({ user_name, password, email }))
   };
 
   return (
@@ -231,14 +268,14 @@ function RegisterForm({ setSelectedHomeModal, setShowModal, showModal }) {
         >
           <Controller
             control={control}
-            name="userName"
+            name="user_name"
             render={({ field: { onChange } }) => (
               <FormControl fullWidth>
                 <CNTextField
                   type="text"
                   placeholder="User name"
                   className={RegisterStyle.textFieldStyle}
-                  error={!!formState.errors['userName']}
+                  error={!!formState.errors['user_name']}
                   endAdornment={
                     <SVGIcon name="user" width="21px" height="21px"></SVGIcon>
                   }
@@ -246,7 +283,7 @@ function RegisterForm({ setSelectedHomeModal, setShowModal, showModal }) {
                   inputChange={onChange}
                 />
                 <FormHelperText className={RegisterStyle.helperTextStyles}>
-                  {formState.errors['userName']?.message}
+                  {formState.errors['user_name']?.message}
                 </FormHelperText>
               </FormControl>
             )}
@@ -272,9 +309,15 @@ function RegisterForm({ setSelectedHomeModal, setShowModal, showModal }) {
                 <FormHelperText className={RegisterStyle.helperTextStyles}>
                   {formState.errors['email']?.message}
                 </FormHelperText>
+                <FormHelperText className={RegisterStyle.helperTextStyles}>
+                  {formState.errors['wrongInfo']?.message}
+                </FormHelperText>
+
               </FormControl>
             )}
           />
+
+
 
           <Controller
             control={control}

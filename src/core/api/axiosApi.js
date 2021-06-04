@@ -32,6 +32,15 @@ axiosApi.interceptors.response.use((response) => {
         setNewHeader(response.data)
         // axiosApi.defaults.headers["Authorization"]="Bearer "+response.data.accessToken; 
     }
+
+
+if(response.config.url==="/signup"){
+    axiosApi.defaults.headers["Authorization"] = "Bearer " + response.data.accessToken
+    setCookie("cn11_refresh_token", response.data.accessToken, 100);
+    setCookie("cn11_access_token", response.data.refreshToken, 100);
+}
+
+    console.log(response);
     return response
 
 
