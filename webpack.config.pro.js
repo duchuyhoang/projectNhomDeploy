@@ -5,9 +5,9 @@ module.exports = {
     mode: "production",
     entry: path.join(__dirname, "/src/index.js"),
     output: {
-        path: path.join(__dirname, "/build"),
+        path: path.join(__dirname, "/docs"),
         filename: "bundle.js",
-        publicPath: "/build",
+        publicPath: "/docs/",
         clean:true
     },
     resolve:{
