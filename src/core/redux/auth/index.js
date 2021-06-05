@@ -59,8 +59,26 @@ const signUp = createAsyncThunk("auth/signup", async (payload, { rejectWithValue
         return response.data;
     }
     catch (err) {
-       return  rejectWithValue({...err.response.data})
+        return rejectWithValue({ ...err.response.data })
     }
+})
+
+
+const loginFacebook = createAsyncThunk("auth/loginFacebook", async (payload, { rejectWithValue }) => {
+    const { email, accessToken } = payload;
+
+    try {
+        const response = await axiosApi.post("/loginFacebook", {
+            email,
+            accessToken
+        })
+
+        return response.data;
+    }
+    catch (err) {
+        return rejectWithValue({ ...err.response.data })
+    }
+
 })
 
 
@@ -121,12 +139,15 @@ const authSlice = createSlice({
     name: "auth",
     initialState: {
         user: null,
+        temporatoryUser:null,
         loading: "idle",
         error: null,
         id: null,
         permission: "GUEST",
         accessToken: null,
-        refreshToken: null
+        firstFacebook: false,
+        refreshToken: null,
+
     },
     reducer: {},
     extraReducers: (builder) => {
@@ -148,6 +169,31 @@ const authSlice = createSlice({
                 state.error = action.payload.message;
                 state.loading = "rejected";
             })
+
+        // loginFacebook
+        builder.addCase(loginFacebook.pending, (state, action) => {
+            state.loading = "loading"
+        })
+            .addCase(loginFacebook.fulfilled, (state, action) => {
+                state.loading = "fulfilled";
+                console.log("ok", action.payload);
+                const data = action.payload;
+
+                if (data.status == 302) {
+                    state.firstFacebook = true;
+                    state.temporatoryUser=data.info;
+                }
+                else if (data.status == 200) {
+
+                }
+                
+
+
+            })
+            .addCase(loginFacebook.rejected, (state, action) => {
+                console.log("okl", action);
+            })
+
 
         // Relogin
         builder.addCase(reLogin.pending, (state, action) => {
@@ -180,8 +226,8 @@ const authSlice = createSlice({
                 state.permission = parseJwt(action.payload.accessToken)?.permission;
                 state.accessToken = action.payload.accessToken;
                 state.refreshToken = action.payload.refreshToken;
-                setCookie("cn11_access_token",action.payload.accessToken,100)
-                setCookie("cn11_refresh_token",action.payload.refreshToken,100)
+                setCookie("cn11_access_token", action.payload.accessToken, 100)
+                setCookie("cn11_refresh_token", action.payload.refreshToken, 100)
             })
             .addCase(signUp.rejected, (state, action) => {
                 state.loading = "rejected";
@@ -210,7 +256,8 @@ export const authActions = {
     userLogin,
     signUp,
     reLogin,
-    logOut
+    logOut,
+    loginFacebook
 }
 
 

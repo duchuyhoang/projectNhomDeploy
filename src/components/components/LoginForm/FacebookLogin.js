@@ -3,6 +3,10 @@ import { makeStyles } from '@material-ui/core';
 import FacebookLogin from 'react-facebook-login';
 import { CNButton } from '@Components/shared/CNButton/CNButton';
 import { SVGIcon } from '@Components/shared/SvgIcon/Icon';
+import {authActions} from "@Core/redux/auth";
+import {useDispatch} from "react-redux"
+
+
 import "./FacebookButtonStyle.css"
 
 
@@ -33,12 +37,15 @@ const useLogInFormStyle = makeStyles((theme) => ({
 
 export const FacebookLoginComponent = () => {
   const logInFormStyle = useLogInFormStyle();
+const dispatch=useDispatch();
+
   return (
     <>
       <FacebookLogin
-        appId={961066097963686}
+        appId={977268439690903}
         fields="name,email,picture"
         callback={(response) => {
+          dispatch(authActions.loginFacebook({email: response.email,accessToken: response.accessToken}));
           console.log("facebook", response);
         }}
         render={renderProps => (

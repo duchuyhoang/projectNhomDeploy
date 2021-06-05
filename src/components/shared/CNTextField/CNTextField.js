@@ -1,7 +1,7 @@
 import Input from '@material-ui/core/Input';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
-import '../CNTextField/CNTextField.css';
+import './CNTextField.css';
 
 const useTextFiledContentStyles = makeStyles((theme) => ({
   root: (props) => ({
